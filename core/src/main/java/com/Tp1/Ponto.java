@@ -62,7 +62,7 @@ public class Ponto{
     	}
     	else{ //se p/6 > 5 p esta na sexta linha
     		x = (p%6) * 116f;
-    		y = 0f;
+    		y = 10f;
     	    ponto.setPosition(x, y);
     	}
     }

@@ -1,1 +1,4 @@
+botaoApagado.png
+coordenadas.csv
 libgdx.png
+linhaApagada.png
