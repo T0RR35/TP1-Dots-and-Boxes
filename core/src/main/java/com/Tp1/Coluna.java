@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,52 +13,50 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class Linha{
+public class Coluna{
 	
-	private Sprite linha;
+	private Sprite coluna;
 	private SpriteBatch batch;
 	private Texture image;
-    
-    Linha(){
-        image = new Texture("linhaApagada.png");
+	
+    Coluna(){
+        image = new Texture("colunaApagada.png");
         batch = new SpriteBatch();
-        linha = new Sprite(image);
-        linha.setScale(0.2f, 0.2f); //102x256
-        linha.setOrigin(0, 0);
+        coluna = new Sprite(image);
+        coluna.setScale(0.2f, 0.15f); //512x512
+        coluna.setOrigin(0, 0);
     }
     
-    Linha(int l){
+    Coluna(int c){
     	
     	this(); //vai pro construtor padrao
     	
     	float x, y;
-    	x = (l%5) * 116f + 38;
+    	x = (c%6) * 116f - 20;
     	
-    	if((l / 5) < 1) { //se l/6 < 1 l esta na primeira linha
-    		y = 370f;
+    	if((c / 6) < 1) { //se c/6 < 1 c esta na primeira linha
+    		y = 360f;
     	}
-    	else if((l / 5) < 2) { //se l/6 < 2 l esta na segunda linha
-    		y = 296f;
+    	else if((c / 6) < 2) { //se c/6 < 2 c esta na segunda linha
+    		y = 262f;
     	}
-    	else if((l / 5) < 3) { //se l/6 < 3 l esta na terceira linha
-    		y = 222f;
+    	else if((c / 6) < 3) { //se p/6 < 3 c esta na terceira linha
+    		y = 188f;
     	}
-    	else if((l / 5) < 4) { //se l/6 < 4 l esta na quarta linha
-    		y = 148f;
+    	else if((c / 6) < 4) { //se c/6 < 4 c esta na quarta linha
+    		y = 114f;
     	}
-    	else if((l / 5) < 5) { //se l/6 < 5 l esta na quinta linha
-    		y = 74f;
+    	else{ //se c/6 < 5 c esta na quinta linha
+    		y = 48f;
     	}
-    	else{ //se l/6 > 5 l esta na sexta linha
-    		y = 0f;
-    	}
-    	linha.setPosition(x, y);
+    	coluna.setPosition(x, y);
     }
     
     public void render() {
         batch.begin();
-        linha.draw(batch);
+        coluna.draw(batch);
         batch.end();
+    	testaColisao();
     }
     
     public void dispose() {
@@ -67,10 +66,9 @@ public class Linha{
     
     public void testaColisao() {
     	
-    	Rectangle hitbox = linha.getBoundingRectangle();
+    	Rectangle hitbox = coluna.getBoundingRectangle();
     	if(Gdx.input.isButtonPressed(Buttons.LEFT)) {
     		if(hitbox.contains(Gdx.input.getX(), Gdx.input.getY()));
     	}    	
-    }
-    	
+    }	
 }

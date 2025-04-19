@@ -34,37 +34,27 @@ public class Ponto{
     	this(); //vai pro construtor padrao
     	
     	float x, y;
+    	x = (p%6) * 116f + 15; //15 eh metade do tamanho do ponto
     	
     	if((p / 6) < 1) { //se p/6 <= 1 p esta na primeira linha
-    		x = (p%6) * 116f;
-    		y = 400f;
-    	    ponto.setPosition(x, y);
+    		y = 410f;
     	}
     	else if((p / 6) < 2) { //se p/6 <= 2 p esta na segunda linha
-    		x = (p%6) * 116f;
-    		y = 320f;
-    	    ponto.setPosition(x, y);
+    		y = 336f;
     	}
     	else if((p / 6) < 3) { //se p/6 <= 3 p esta na terceira linha
-    		x = (p%6) * 116f;
-    		y = 240f;
-    	    ponto.setPosition(x, y);
+    		y = 262f;
     	}
     	else if((p / 6) < 4) { //se p/6 <= 4 p esta na quarta linha
-    		x = (p%6) * 116f;
-    		y = 160f;
-    	    ponto.setPosition(x, y);
+    		y = 188f;
     	}
     	else if((p / 6) < 5) { //se p/6 <= 5 p esta na quinta linha
-    		x = (p%6) * 116f;
-    		y = 80f;
-    	    ponto.setPosition(x, y);
+    		y = 114f;
     	}
     	else{ //se p/6 > 5 p esta na sexta linha
-    		x = (p%6) * 116f;
-    		y = 10f;
-    	    ponto.setPosition(x, y);
+    		y = 40f;
     	}
+    	ponto.setPosition(x, y);
     }
     
     public void render() {

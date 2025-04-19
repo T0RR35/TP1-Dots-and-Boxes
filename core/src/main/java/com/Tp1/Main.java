@@ -17,6 +17,7 @@ public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture image;
     
+    Coluna [] colunas = new Coluna [30];
     Ponto [] pontos = new Ponto [36]; //era pra ser 35
     Linha [] linhas = new Linha [30];
 
@@ -35,10 +36,10 @@ public class Main extends ApplicationAdapter {
     
     void olhaCoordenadas() throws FileNotFoundException{
    
-        File getCSVFiles = new File("C:\\Users\\Ana\\Desktop\\Tp1\\assets\\coordenadas.csv");
+        File getCSVFiles = new File("D:\\2025\\cefet\\3 ano\\zProjetos\\TP1\\assets\\coordenadas.csv");
     	Scanner sc = new Scanner(getCSVFiles);
     	sc.useDelimiter(";|\\n");
-    	int p = 0, l = 0;
+    	int p = 0, l = 0, c = 0;
     	String token = "";
 
     	while (sc.hasNext()){
@@ -47,18 +48,17 @@ public class Main extends ApplicationAdapter {
 
     		if("Ponto".equals(token)) {
     			pontos[p] = new Ponto(p);
-    			//System.out.println(p+ " hpfidans");
     			p++;
     		} 
     		else if("Linha".equals(token)) {
     			linhas[l] = new Linha(l);
-    			//System.out.println(l+ " hpfidans");
     			l++;
     		}
-    		
-    		System.out.println(p+ " " +token);
+    		else if("Coluna".equals(token)) {
+    			colunas[c] = new Coluna(c);
+    			c++;
+    		}
     	}
-    	
     	sc.close();
     }
 
@@ -68,17 +68,16 @@ public class Main extends ApplicationAdapter {
         
         for (int i = 0; i < pontos.length; i++) {
         	
+        	if(i < colunas.length) {
+        		colunas[i].render();
+        	}
         	if(i < linhas.length) {
         		linhas[i].render();
         	}
-        	if(i < pontos.length) {
-        		pontos[i].render();
-        	}
+        	pontos[i].render();
 		}
         
-       //batch.begin();
-       //batch.draw(image, 140, 210);
-      // batch.end();
+        
     }
 
     @Override
