@@ -9,15 +9,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class Coluna{
+public class Coluna extends ModelObject {
 	
 	private Sprite coluna;
-	private SpriteBatch batch;
-	private Texture image;
 	
     Coluna(){
         image = new Texture("colunaApagada.png");
@@ -31,7 +30,6 @@ public class Coluna{
     	
     	this(); //vai pro construtor padrao
     	
-    	float x, y;
     	x = (c%6) * 116f - 20;
     	
     	if((c / 6) < 1) { //se c/6 < 1 c esta na primeira linha
@@ -52,6 +50,7 @@ public class Coluna{
     	coluna.setPosition(x, y);
     }
     
+	@Override
     public void render() {
         batch.begin();
         coluna.draw(batch);
@@ -59,6 +58,7 @@ public class Coluna{
     	testaColisao();
     }
     
+	@Override
     public void dispose() {
         batch.dispose();
         image.dispose();

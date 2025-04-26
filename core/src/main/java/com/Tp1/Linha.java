@@ -12,11 +12,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class Linha{
+public class Linha extends ModelObject {
 	
 	private Sprite linha;
-	private SpriteBatch batch;
-	private Texture image;
     
     Linha(){
         image = new Texture("linhaApagada.png");
@@ -30,7 +28,6 @@ public class Linha{
     	
     	this(); //vai pro construtor padrao
     	
-    	float x, y;
     	x = (l%5) * 116f + 38;
     	
     	if((l / 5) < 1) { //se l/6 < 1 l esta na primeira linha
@@ -54,12 +51,14 @@ public class Linha{
     	linha.setPosition(x, y);
     }
     
+	@Override
     public void render() {
         batch.begin();
         linha.draw(batch);
         batch.end();
     }
     
+	@Override
     public void dispose() {
         batch.dispose();
         image.dispose();

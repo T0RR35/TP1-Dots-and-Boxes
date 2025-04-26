@@ -13,13 +13,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class Ponto{
+class ModelObject {
+	//atributos padrao
+	protected SpriteBatch batch;
+	protected Texture image;
+	protected float x = 0, y = 0;
+
+	//metodos padrao
+	protected void render(){}
+	protected void dispose(){}
+}
+
+public class Ponto extends ModelObject {
 
 	private Sprite ponto;
-	private SpriteBatch batch;
-	private Texture image;
-
-    
     
     Ponto(){
         image = new Texture("botaoApagado.png");
@@ -33,7 +40,6 @@ public class Ponto{
     	
     	this(); //vai pro construtor padrao
     	
-    	float x, y;
     	x = (p%6) * 116f + 15; //15 eh metade do tamanho do ponto
     	
     	if((p / 6) < 1) { //se p/6 <= 1 p esta na primeira linha
@@ -57,12 +63,14 @@ public class Ponto{
     	ponto.setPosition(x, y);
     }
     
+	@Override
     public void render() {
         batch.begin();
         ponto.draw(batch);
         batch.end();
     }
     
+	@Override
     public void dispose() {
         batch.dispose();
         image.dispose();

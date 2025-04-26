@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
     
     void olhaCoordenadas() throws FileNotFoundException{
    
-        File getCSVFiles = new File("D:\\2025\\cefet\\3 ano\\zProjetos\\TP1\\assets\\coordenadas.csv");
+        File getCSVFiles = new File("C:\\Users\\roger\\OneDrive\\Área de Trabalho\\DOTS\\assets\\coordenadas.csv");
     	Scanner sc = new Scanner(getCSVFiles);
     	sc.useDelimiter(";|\\n");
     	int p = 0, l = 0, c = 0;
