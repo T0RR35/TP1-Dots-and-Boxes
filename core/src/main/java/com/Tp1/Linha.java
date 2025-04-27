@@ -16,6 +16,8 @@ public class Linha extends ModelObject {
 
 	private Sprite linha;
 	private boolean estaAcesa;
+	private boolean temQueVerificarSeDeuQuadrado;
+	private boolean jaVerificou;
 
 	Linha() {
 		image = new Texture("linhaApagada.png");
@@ -24,6 +26,8 @@ public class Linha extends ModelObject {
 		linha.setScale(0.2f, 0.2f); // 102x256
 		linha.setOrigin(0, 0);
 		estaAcesa = false;
+		temQueVerificarSeDeuQuadrado = false;
+		jaVerificou = false;
 	}
 
 	Linha(int l) {
@@ -68,16 +72,28 @@ public class Linha extends ModelObject {
 
 		int mouseYreal = Gdx.graphics.getHeight() - mouseY;
 
-		if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
-			if (hitbox.contains(mouseX, mouseYreal)) {
-				image = new Texture("linhaAcesa.png");
-				linha.setRegion(image);
-				estaAcesa = true;
+		if(jaVerificou == false){
+			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
+				if (hitbox.contains(mouseX, mouseYreal)) {
+					image = new Texture("linhaAcesa.png");
+					linha.setRegion(image);
+					estaAcesa = true;
+					temQueVerificarSeDeuQuadrado = true;
+					jaVerificou = true;
+				}
 			}
 		}
 	}
 
 	public boolean getEstaAcesa(){
 		return estaAcesa;
+	}
+
+	public boolean getTemQueVerificarSeDeuQuadrado(){
+		return temQueVerificarSeDeuQuadrado;
+	}
+
+	public void setTemQueVerificarSeDeuQuadrado(boolean value){
+		temQueVerificarSeDeuQuadrado = value;
 	}
 }

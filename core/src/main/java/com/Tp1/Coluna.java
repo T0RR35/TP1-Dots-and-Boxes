@@ -19,6 +19,8 @@ public class Coluna extends ModelObject {
 
 	private Sprite coluna;
 	private boolean estaAcesa;
+	private boolean temQueVerificarSeDeuQuadrado;
+	private boolean jaVerificou;
 
 	Coluna() {
 		image = new Texture("colunaApagada.png");
@@ -28,6 +30,8 @@ public class Coluna extends ModelObject {
 		coluna.setOrigin(0, 0);
 
 		estaAcesa = false;
+		temQueVerificarSeDeuQuadrado = false;
+		jaVerificou = false;
 	}
 
 	Coluna(int c) {
@@ -71,16 +75,28 @@ public class Coluna extends ModelObject {
 
 		int mouseYreal = Gdx.graphics.getHeight() - mouseY;
 
-		if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
-			if (hitbox.contains(mouseX, mouseYreal)) {
-				image = new Texture("colunaAcesa.png");
-				coluna.setRegion(image);
-				estaAcesa = true;
+		if(jaVerificou == false){
+			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
+				if (hitbox.contains(mouseX, mouseYreal)) {
+					image = new Texture("colunaAcesa.png");
+					coluna.setRegion(image);
+					estaAcesa = true;
+					temQueVerificarSeDeuQuadrado = true;
+					jaVerificou = true;
+				}
 			}
 		}
 	}
 
 	public boolean getEstaAcesa(){
 		return estaAcesa;
+	}
+
+	public boolean getTemQueVerificarSeDeuQuadrado(){
+		return temQueVerificarSeDeuQuadrado;
+	}
+
+	public void setTemQueVerificarSeDeuQuadrado(boolean value){
+		temQueVerificarSeDeuQuadrado = value;
 	}
 }

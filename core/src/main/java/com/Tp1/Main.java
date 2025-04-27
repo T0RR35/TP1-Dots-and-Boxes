@@ -35,9 +35,9 @@ public class Main extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Texture image;
 
-	Coluna[] colunas = new Coluna[30];
-	Ponto[] pontos = new Ponto[36]; // era pra ser 35
-	Linha[] linhas = new Linha[30];
+	Coluna[][] colunas = new Coluna[6][5];
+	Ponto[][] pontos = new Ponto[6][6];
+	Linha[][] linhas = new Linha[5][6];
 
 	@Override
 	public void create() {
@@ -54,25 +54,45 @@ public class Main extends ApplicationAdapter {
 
 	void olhaCoordenadas() throws FileNotFoundException {
 
-		File getCSVFiles = new File("D:\\2025\\cefet\\3 ano\\zProjetos\\TP1\\assets\\coordenadas.csv");
+		File getCSVFiles = new File("assets\\coordenadas.csv");
 		Scanner sc = new Scanner(getCSVFiles);
 		sc.useDelimiter(";|\\n");
-		int p = 0, l = 0, c = 0;
+		int p = 0, c = 0, l = 0;
+		int ll = 0, cl = 0; // linhas e colunas da matriz LINHA[][]
+		int lc = 0, cc = 0; // linhas e colunas da matriz COLUNA[][]
+		int lp = 0, cp = 0;// linhas e colunas da matriz PONTO[][]
 		String token = "";
 
 		while (sc.hasNext()) {
-
 			token = sc.next();
 
 			if ("Ponto".equals(token)) {
-				pontos[p] = new Ponto(p);
+				pontos[lp][cp] = new Ponto(p);
 				p++;
+				if (lp == 5) {
+					lp = 0;
+					cp++;
+				} else {
+					lp++;
+				}
 			} else if ("Linha".equals(token)) {
-				linhas[l] = new Linha(l);
+				linhas[ll][cl] = new Linha(l);
 				l++;
+				if (ll == 4) {
+					ll = 0;
+					cl++;
+				} else {
+					ll++;
+				}
 			} else if ("Coluna".equals(token)) {
-				colunas[c] = new Coluna(c);
+				colunas[lc][cc] = new Coluna(c);
 				c++;
+				if (lc == 5) {
+					lc = 0;
+					cc++;
+				} else {
+					lc++;
+				}
 			}
 		}
 		sc.close();
@@ -82,15 +102,88 @@ public class Main extends ApplicationAdapter {
 	public void render() {
 		ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
-		for (int i = 0; i < pontos.length; i++) {
+		for (int i = 0; i < 6; i++) { //colunas
+			for(int j = 0; j < 6; j++){ //linhas
+				if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
+					colunas[i][j].render();
+					if(colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
+						verificaSeDeuQuadrado(i, j, true, false);
+					}
+				}
+				if (i < 5) { //se for == 5 vai acessar memoria que nao existe 
+					linhas[i][j].render();
+					if(linhas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
+						verificaSeDeuQuadrado(i, j, false, true);
+					}
+				}
+				pontos[i][j].render();
+			}
+		}
+	}
 
-			if (i < colunas.length) {
-				colunas[i].render();
+	private void verificaSeDeuQuadrado(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha) {
+
+		//se i == 5 so pode ter sido uma coluna que chamou a funcao
+		if(i == 5){ //ve se a coluna eh a ultima da fileira
+			colunas[i][j].setTemQueVerificarSeDeuQuadrado(false);
+			if(colunas[i-1][j].getEstaAcesa() == true){ //se a coluna do lado esquerdo estiver acesa
+				if((linhas[i-1][j].getEstaAcesa() == true) && (linhas[i-1][j+1].getEstaAcesa() == true)){
+					System.out.println("Deu quadrado!");
+				}
 			}
-			if (i < linhas.length) {
-				linhas[i].render();
+		}
+		//se j == 5 so pode ter sido uma linha que chamou a funcao
+		else if(j == 5){ // verifica se a linha eh a mais embaixo do mapa
+			linhas[i][j].setTemQueVerificarSeDeuQuadrado(false);
+			if(linhas[i][j-1].getEstaAcesa() == true){ //se a linha de cima estiver acesa
+				if((colunas[i][j-1].getEstaAcesa() == true) && (colunas[i+1][j-1].getEstaAcesa() == true)){
+					System.out.println("Deu quadrado!");
+				}
 			}
-			pontos[i].render();
+		}
+		else if(quemChamouFoiUmaColuna == true && i == 0){
+			colunas[i][j].setTemQueVerificarSeDeuQuadrado(false);
+			if(colunas[i+1][j].getEstaAcesa() == true){ //se a coluna do lado direito estiver acesa
+				if((linhas[i][j].getEstaAcesa() == true) && (linhas[i][j+1].getEstaAcesa() == true)){
+					System.out.println("Deu quadrado!");
+				}
+			}
+		}
+		else if(quemChamouFoiUmaLinha == true && j == 0){
+			linhas[i][j].setTemQueVerificarSeDeuQuadrado(false);
+			if(linhas[i][j+1].getEstaAcesa() == true){ //se a linha de baixo estiver acesa
+				if((colunas[i][j].getEstaAcesa() == true) && (colunas[i+1][j].getEstaAcesa() == true)){
+					System.out.println("Deu quadrado!");
+				}
+			}
+		}
+		//se foi uma linha que nao esta na beirada
+		else if(quemChamouFoiUmaLinha == true){
+			linhas[i][j].setTemQueVerificarSeDeuQuadrado(false);
+			if(linhas[i][j+1].getEstaAcesa() == true){ //se a linha de baixo estiver acesa
+				if((colunas[i][j].getEstaAcesa() == true) && (colunas[i+1][j].getEstaAcesa() == true)){
+					System.out.println("Deu quadrado!");
+				}
+			}
+			if(linhas[i][j-1].getEstaAcesa() == true){ //se a linha de cima estiver acesa
+				if((colunas[i][j-1].getEstaAcesa() == true) && (colunas[i+1][j-1].getEstaAcesa() == true)){
+					System.out.println("Deu quadrado!");
+				}
+			}
+		}
+ 		// se foi uma coluna que nao esta na beirada
+		else if(quemChamouFoiUmaColuna == true){
+			colunas[i][j].setTemQueVerificarSeDeuQuadrado(false);
+			if(colunas[i-1][j].getEstaAcesa() == true){ //se a coluna do lado esquerdo estiver acesa
+				if((linhas[i-1][j].getEstaAcesa() == true) && (linhas[i-1][j+1].getEstaAcesa() == true)){
+					System.out.println("Deu quadrado!");
+				}
+			}
+			if(colunas[i+1][j].getEstaAcesa() == true){ //se a coluna do lado direito estiver acesa
+				if((linhas[i][j].getEstaAcesa() == true) && (linhas[i][j+1].getEstaAcesa() == true)){
+					System.out.println("Deu quadrado!");
+				}
+			}
 		}
 	}
 
