@@ -1,14 +1,12 @@
 package com.Tp1;
 
 import java.util.Scanner;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import java.util.Scanner;
 import java.io.*;
 
 /**
@@ -33,7 +31,8 @@ class ModelObject {
 public class Main extends ApplicationAdapter {
 
 	private SpriteBatch batch;
-	private Texture image;
+	private Sprite background;
+	private Texture imageBackground;
 
 	Coluna[][] colunas = new Coluna[6][5];
 	Ponto[][] pontos = new Ponto[6][6];
@@ -41,15 +40,75 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-
+		batch = new SpriteBatch();
+		imageBackground = new Texture("assets\\background.png");
+		background = new Sprite(imageBackground);
+		background.setOriginCenter();
+		//escala baseada no tamanho da tela, entao o fundo sempre cobrira tudo
+		background.setScale(Gdx.graphics.getWidth() / background.getWidth(), Gdx.graphics.getHeight() / background.getHeight());
+		
 		try {
 			olhaCoordenadas();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 
-		// dahjiwbduyoaw
+	@Override
+	public void render() {
+		ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+
+		batch.begin();
+		batch.draw(background, 0, 0); //desenha fundo
+		batch.end();
+
+		//renderizando pontos, linhas e colunas
+		for (int i = 0; i < 6; i++) { //colunas
+			for(int j = 0; j < 6; j++){ //linhas
+				if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
+					colunas[i][j].render();
+				}
+				if (i < 5) { //se for == 5 vai acessar memoria que nao existe 
+					linhas[i][j].render();
+				}
+				pontos[i][j].render();
+			}
+		}
+
+		//verificando se deu quadrado
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				if(colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
+					verificaSeDeuQuadrado(i, j, true, false);
+				}
+				if(linhas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
+					verificaSeDeuQuadrado(i, j, false, true);
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public void dispose() {
+		for (Ponto[] ponto2 : pontos) {
+			for (Ponto ponto : ponto2) {
+				ponto.dispose();
+			}
+		}
+		for (Linha[] linhas2 : linhas) {
+			for (Linha linha : linhas2) {
+				linha.dispose();
+			}
+		}
+		for (Coluna[] colunas2 : colunas) {
+			for (Coluna coluna : colunas2) {
+				coluna.dispose();
+			}
+		}
+		batch.dispose();
+		imageBackground.dispose();
 	}
 
 	void olhaCoordenadas() throws FileNotFoundException {
@@ -96,29 +155,6 @@ public class Main extends ApplicationAdapter {
 			}
 		}
 		sc.close();
-	}
-
-	@Override
-	public void render() {
-		ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
-		for (int i = 0; i < 6; i++) { //colunas
-			for(int j = 0; j < 6; j++){ //linhas
-				if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
-					colunas[i][j].render();
-					if(colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
-						verificaSeDeuQuadrado(i, j, true, false);
-					}
-				}
-				if (i < 5) { //se for == 5 vai acessar memoria que nao existe 
-					linhas[i][j].render();
-					if(linhas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
-						verificaSeDeuQuadrado(i, j, false, true);
-					}
-				}
-				pontos[i][j].render();
-			}
-		}
 	}
 
 	private void verificaSeDeuQuadrado(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha) {
@@ -185,16 +221,5 @@ public class Main extends ApplicationAdapter {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void dispose() {
-		/*
-		 * for (int i = 0; i < 36; i++) {
-		 * pontos[i].dispose();
-		 * }
-		 */
-		// batch.dispose();
-		// image.dispose();
 	}
 }
