@@ -11,10 +11,17 @@ public class Player {
 
     public void aumentaScore(){
         this.score++;
-        System.out.println(score);
+    }
+
+    public int getScore(){
+        return score;
     }
 
     public void setVezDeJogar(boolean value){
         this.vezDeJogar = value;
+    }
+
+    public boolean getVezDeJogar(){
+        return vezDeJogar;
     }
 }

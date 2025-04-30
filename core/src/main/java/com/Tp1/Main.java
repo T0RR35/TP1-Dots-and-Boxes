@@ -38,6 +38,7 @@ public class Main extends ApplicationAdapter {
 	Ponto[][] pontos = new Ponto[6][6];
 	Linha[][] linhas = new Linha[5][6];
 	Player player1 = new Player();
+	Player player2 = new Player();
 
 	@Override
 	public void create() {
@@ -47,6 +48,8 @@ public class Main extends ApplicationAdapter {
 		background.setOriginCenter();
 		//escala baseada no tamanho da tela, entao o fundo sempre cobrira tudo
 		background.setScale(Gdx.graphics.getWidth() / background.getWidth(), Gdx.graphics.getHeight() / background.getHeight());
+
+		player1.setVezDeJogar(true);
 		
 		try {
 			olhaCoordenadas();
@@ -78,13 +81,17 @@ public class Main extends ApplicationAdapter {
 		}
 
 		//verificando se deu quadrado
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				if(colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
-					verificaSeDeuQuadrado(i, j, true, false);
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
+					if(colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
+						verificaSeDeuQuadrado(i, j, true, false);
+					}
 				}
-				if(linhas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
-					verificaSeDeuQuadrado(i, j, false, true);
+				if (i < 5) { //se for == 5 vai acessar memoria que nao existe 
+					if(linhas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
+						verificaSeDeuQuadrado(i, j, false, true);
+					}
 				}
 			}
 		}
@@ -114,7 +121,7 @@ public class Main extends ApplicationAdapter {
 
 	void olhaCoordenadas() throws FileNotFoundException {
 
-		File getCSVFiles = new File("coordenadas.csv");
+		File getCSVFiles = new File("./assets/coordenadas.csv");
 		Scanner sc = new Scanner(getCSVFiles);
 		sc.useDelimiter(";|\\n");
 		int p = 0, c = 0, l = 0;
@@ -160,69 +167,109 @@ public class Main extends ApplicationAdapter {
 
 	private void verificaSeDeuQuadrado(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha) {
 
+		boolean deuQuadradoEmCima=false, deuQuadradoEmbaixo=false, deuQuadradoNaDireita=false, deuQuadradoNaEsquerda=false;
 		//se i == 5 so pode ter sido uma coluna que chamou a funcao
 		if(i == 5){ //ve se a coluna eh a ultima da fileira
-			verificaSeDeuQuadradoNaEsquerda(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
+			deuQuadradoNaEsquerda = verificaSeDeuQuadradoNaEsquerda(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
 		}
 		//se j == 5 so pode ter sido uma linha que chamou a funcao
 		else if(j == 5){ // verifica se a linha eh a mais embaixo do mapa
-			verificaSeDeuQuadradoEmCima(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
+			deuQuadradoEmCima = verificaSeDeuQuadradoEmCima(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
 		}
+		//se foi uma coluna do canto esquerdo
 		else if(quemChamouFoiUmaColuna == true && i == 0){
-			verificaSeDeuQuadradoNaDireita(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
+			deuQuadradoNaDireita = verificaSeDeuQuadradoNaDireita(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
 		}
+		//se foi uma linha do topo
 		else if(quemChamouFoiUmaLinha == true && j == 0){
-			verificaSeDeuQuadradoEmbaixo(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
+			deuQuadradoEmbaixo = verificaSeDeuQuadradoEmbaixo(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
 		}
 		//se foi uma linha que nao esta na beirada
 		else if(quemChamouFoiUmaLinha == true){
-			verificaSeDeuQuadradoEmCima(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
-			verificaSeDeuQuadradoEmbaixo(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
+			deuQuadradoEmCima = verificaSeDeuQuadradoEmCima(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
+			deuQuadradoEmbaixo = verificaSeDeuQuadradoEmbaixo(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
 		}
  		// se foi uma coluna que nao esta na beirada
 		else if(quemChamouFoiUmaColuna == true){
-			verificaSeDeuQuadradoNaDireita(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
-			verificaSeDeuQuadradoNaEsquerda(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
+			deuQuadradoNaDireita = verificaSeDeuQuadradoNaDireita(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
+			deuQuadradoNaEsquerda = verificaSeDeuQuadradoNaEsquerda(i, j, quemChamouFoiUmaColuna, quemChamouFoiUmaLinha);
+		}
+
+		//se fez quadrado aumenta ponto e repete a jogada
+		if(deuQuadradoEmCima==true){repeteAjogadaEaumentaPonto();}
+		if(deuQuadradoEmbaixo==true){repeteAjogadaEaumentaPonto();}
+		if(deuQuadradoNaDireita==true){repeteAjogadaEaumentaPonto();}
+		if(deuQuadradoNaEsquerda==true){repeteAjogadaEaumentaPonto();}
+
+		if(deuQuadradoEmCima==false &&
+		deuQuadradoEmbaixo==false &&
+		deuQuadradoNaDireita==false &&
+		deuQuadradoNaEsquerda==false){ //se nao fez quadrado
+			passaAjogada();
 		}
 	}
 
-	private void verificaSeDeuQuadradoNaEsquerda(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha){
+	private boolean verificaSeDeuQuadradoNaEsquerda(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha){
 		colunas[i][j].setTemQueVerificarSeDeuQuadrado(false);
 		if(colunas[i-1][j].getEstaAcesa() == true){ //se a coluna do lado esquerdo estiver acesa
-			if((linhas[i-1][j].getEstaAcesa() == true) && (linhas[i-1][j+1].getEstaAcesa() == true)){
+			if((linhas[i-1][j].getEstaAcesa() == true) && (linhas[i-1][j+1].getEstaAcesa() == true)){//se a linha da esquerda cima e esquerda baixo estiver acesas
 				System.out.println("Deu quadrado!");
-				player1.aumentaScore();
+				return true;
 			}
 		}
+		return false;
 	}
 
-	private void verificaSeDeuQuadradoEmCima(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha){
+	private boolean verificaSeDeuQuadradoEmCima(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha){
 		linhas[i][j].setTemQueVerificarSeDeuQuadrado(false);
 		if(linhas[i][j-1].getEstaAcesa() == true){ //se a linha de cima estiver acesa
-			if((colunas[i][j-1].getEstaAcesa() == true) && (colunas[i+1][j-1].getEstaAcesa() == true)){
+			if((colunas[i][j-1].getEstaAcesa() == true) && (colunas[i+1][j-1].getEstaAcesa() == true)){//se as colunas de cima estao acesas
 				System.out.println("Deu quadrado!");
-				player1.aumentaScore();
+				return true;
 			}
 		}
+		return false;
 	}
 
-	private void verificaSeDeuQuadradoNaDireita(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha){
+	private boolean verificaSeDeuQuadradoNaDireita(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha){
 		colunas[i][j].setTemQueVerificarSeDeuQuadrado(false);
 		if(colunas[i+1][j].getEstaAcesa() == true){ //se a coluna do lado direito estiver acesa
-			if((linhas[i][j].getEstaAcesa() == true) && (linhas[i][j+1].getEstaAcesa() == true)){
+			if((linhas[i][j].getEstaAcesa() == true) && (linhas[i][j+1].getEstaAcesa() == true)){//se a linha da direita cima e direita baixo estiverem acesas
 				System.out.println("Deu quadrado!");
-				player1.aumentaScore();
+				return true;
 			}
+		}
+		return false;
+	}
+
+	private boolean verificaSeDeuQuadradoEmbaixo(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha){
+		linhas[i][j].setTemQueVerificarSeDeuQuadrado(false);
+		if(linhas[i][j+1].getEstaAcesa() == true){ //se a linha de baixo estiver acesa
+			if((colunas[i][j].getEstaAcesa() == true) && (colunas[i+1][j].getEstaAcesa() == true)){//se as colunas de baixo estao acesas
+				System.out.println("Deu quadrado!");
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void repeteAjogadaEaumentaPonto(){
+		if(player1.getVezDeJogar() == true){//se for o player1 que fez o quadrado
+			player1.aumentaScore();
+			System.out.println("player 1: " + player1.getScore() + " pontos");
+		}else if(player2.getVezDeJogar() == true){//se for o player2 que fez o quadrado
+			player2.aumentaScore();
+			System.out.println("player 2: " + player2.getScore() + " pontos");
 		}
 	}
 
-	private void verificaSeDeuQuadradoEmbaixo(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha){
-		linhas[i][j].setTemQueVerificarSeDeuQuadrado(false);
-		if(linhas[i][j+1].getEstaAcesa() == true){ //se a linha de baixo estiver acesa
-			if((colunas[i][j].getEstaAcesa() == true) && (colunas[i+1][j].getEstaAcesa() == true)){
-				System.out.println("Deu quadrado!");
-				player1.aumentaScore();
-			}
+	private void passaAjogada(){
+		if(player1.getVezDeJogar() == true){//se for o player1 que fez o quadrado
+			player2.setVezDeJogar(true);
+			player1.setVezDeJogar(false);
+		}else if(player2.getVezDeJogar() == true){//se for o player2 que fez o quadrado
+			player1.setVezDeJogar(true);
+			player2.setVezDeJogar(false);
 		}
 	}
 }
