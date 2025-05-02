@@ -3,5 +3,6 @@ botaoApagado.png
 colunaAcesa.png
 colunaApagada.png
 coordenadas.csv
+libgdx.png
 linhaAcesa.png
 linhaApagada.png
