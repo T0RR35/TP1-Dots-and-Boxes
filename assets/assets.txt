@@ -3,6 +3,7 @@ botaoApagado.png
 colunaAcesa.png
 colunaApagada.png
 coordenadas.csv
+fundoMenuTemporario.jpg
 libgdx.png
 linhaAcesa.png
 linhaApagada.png

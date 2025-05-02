@@ -33,6 +33,12 @@ public class Main extends Game {
 
 	@Override
 	public void create(){
-		setScreen(new TelaJogo(this));
+		setScreen(new MenuJogo(this));
 	}
+
+	@Override
+	public void render() {
+    super.render(); //n sei pq mas só funciona c/ esse super render
+	}
+
 }
