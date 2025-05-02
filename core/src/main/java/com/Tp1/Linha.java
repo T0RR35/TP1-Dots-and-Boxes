@@ -13,6 +13,7 @@ public class Linha extends ModelObject {
 	private boolean estaAcesa;
 	private boolean temQueVerificarSeDeuQuadrado;
 	private boolean jaVerificou;
+	private Rectangle hitbox;
 
 	Linha() {
 		image = new Texture("linhaApagada.png");
@@ -20,6 +21,9 @@ public class Linha extends ModelObject {
 		linha = new Sprite(image);
 		linha.setScale(0.2f, 0.2f); // 102x256
 		linha.setOrigin(0, 0);
+
+		hitbox = new Rectangle();
+		
 		estaAcesa = false;
 		temQueVerificarSeDeuQuadrado = false;
 		jaVerificou = false;
@@ -61,7 +65,7 @@ public class Linha extends ModelObject {
 	}
 
 	public void testaColisao() {
-		Rectangle hitbox = linha.getBoundingRectangle();
+		hitbox = new Rectangle(linha.getX(), linha.getY() + 44, linha.getWidth()*0.2f, linha.getHeight()*0.2f - 88);//(x, y, width, height)
 		int mouseX = Gdx.input.getX();
 		int mouseY = Gdx.input.getY();
 

@@ -13,6 +13,7 @@ public class Coluna extends ModelObject {
 	private boolean estaAcesa;
 	private boolean temQueVerificarSeDeuQuadrado;
 	private boolean jaVerificou;
+	private Rectangle hitbox;
 
 	Coluna() {
 		image = new Texture("colunaApagada.png");
@@ -20,6 +21,8 @@ public class Coluna extends ModelObject {
 		coluna = new Sprite(image);
 		coluna.setScale(0.2f, 0.15f); // 512x512
 		coluna.setOrigin(0, 0);
+
+		hitbox = new Rectangle();
 
 		estaAcesa = false;
 		temQueVerificarSeDeuQuadrado = false;
@@ -61,7 +64,7 @@ public class Coluna extends ModelObject {
 
 	public void testaColisao() {
 
-		Rectangle hitbox = coluna.getBoundingRectangle();
+		hitbox = new Rectangle(coluna.getX() + 44, coluna.getY(), coluna.getWidth()*0.2f - 88, coluna.getHeight()*0.15f);//(x, y, width, height)
 		int mouseX = Gdx.input.getX();
 		int mouseY = Gdx.input.getY();
 
