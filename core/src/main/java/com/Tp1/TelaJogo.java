@@ -206,15 +206,12 @@ public class TelaJogo implements Screen {
 		}
 
 		//se fez quadrado aumenta ponto e repete a jogada
-		if(deuQuadradoEmCima==true){repeteAjogadaEaumentaPonto();}
-		if(deuQuadradoEmbaixo==true){repeteAjogadaEaumentaPonto();}
-		if(deuQuadradoNaDireita==true){repeteAjogadaEaumentaPonto();}
-		if(deuQuadradoNaEsquerda==true){repeteAjogadaEaumentaPonto();}
+		if(deuQuadradoEmCima || deuQuadradoEmbaixo || deuQuadradoNaDireita || deuQuadradoNaEsquerda){
+			repeteAjogadaEaumentaPonto();
+		}
 
-		if(deuQuadradoEmCima==false &&
-		deuQuadradoEmbaixo==false &&
-		deuQuadradoNaDireita==false &&
-		deuQuadradoNaEsquerda==false){ //se nao fez quadrado
+		//se nao fez quadrado
+		if(!deuQuadradoEmCima && !deuQuadradoEmbaixo && !deuQuadradoNaDireita && !deuQuadradoNaEsquerda){
 			passaAjogada();
 		}
 	}
