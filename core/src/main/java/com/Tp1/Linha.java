@@ -74,14 +74,18 @@ public class Linha extends ModelObject {
 		if(jaVerificou == false){
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
 				if (hitbox.contains(mouseX, mouseYreal)) {
-					image = new Texture("linhaAcesa.png");
-					linha.setRegion(image);
-					estaAcesa = true;
-					temQueVerificarSeDeuQuadrado = true;
-					jaVerificou = true;
+					acendeLinha();
 				}
 			}
 		}
+	}
+
+	public void acendeLinha(){
+		image = new Texture("linhaAcesa.png");
+		linha.setRegion(image);
+		estaAcesa = true;
+		temQueVerificarSeDeuQuadrado = true;
+		jaVerificou = true;
 	}
 
 	public boolean getEstaAcesa(){

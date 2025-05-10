@@ -3,10 +3,13 @@ package com.Tp1;
 public class Player {
     private int score;
     private boolean vezDeJogar;
+    private String dificuldade;
 
-    Player(){
+    Player(String dificuldade){
         score = 0;
         vezDeJogar = false;
+        this.dificuldade = dificuldade;
+        
     }
 
     public void aumentaScore(){
@@ -23,5 +26,13 @@ public class Player {
 
     public boolean getVezDeJogar(){
         return vezDeJogar;
+    }
+
+    public boolean verificaSeEhBot(){
+        if(dificuldade == "easy" || dificuldade == "hard"){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

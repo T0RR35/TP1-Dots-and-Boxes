@@ -21,11 +21,16 @@ public class TelaJogo implements Screen {
     Coluna[][] colunas = new Coluna[6][5];
 	Ponto[][] pontos = new Ponto[6][6];
 	Linha[][] linhas = new Linha[5][6];
-	Player player1 = new Player();
-	Player player2 = new Player();
+	Player player1;
+	Player player2;
 
-    public TelaJogo(Main game){
+	int qntColunasAcesas = 0;
+	int qntLinhasAcesas = 0;
+
+    public TelaJogo(Main game, String dificuldade){
         this.game = game;
+		player1 = new Player(dificuldade);
+		player2 = new Player(dificuldade);
         show();
     }
 
@@ -75,7 +80,7 @@ public class TelaJogo implements Screen {
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 6; j++) {
 				if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
-					if(colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true){
+					if(colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true){ //pra nao contar quadrado quando clicar em uma coluna/linha que ja esta acesa
 						verificaSeDeuQuadrado(i, j, true, false);
 					}
 				}
@@ -177,6 +182,9 @@ public class TelaJogo implements Screen {
 
 	private void verificaSeDeuQuadrado(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha) {
 
+		if(quemChamouFoiUmaColuna)qntColunasAcesas++;
+		if(quemChamouFoiUmaLinha)qntLinhasAcesas++;
+
 		boolean deuQuadradoEmCima=false, deuQuadradoEmbaixo=false, deuQuadradoNaDireita=false, deuQuadradoNaEsquerda=false;
 		//se i == 5 so pode ter sido uma coluna que chamou a funcao
 		if(i == 5){ //ve se a coluna eh a ultima da fileira
@@ -267,16 +275,49 @@ public class TelaJogo implements Screen {
 		}else if(player2.getVezDeJogar() == true){//se for o player2 que fez o quadrado
 			player2.aumentaScore();
 			System.out.println("player 2: " + player2.getScore() + " pontos");
+			if(player2.verificaSeEhBot() == true){
+				fazAjogadaDeBot();
+			}
 		}
 	}
 
 	private void passaAjogada(){
-		if(player1.getVezDeJogar() == true){//se for o player1 que fez o quadrado
+		if(player1.getVezDeJogar() == true){//se for o player1 que jogou por ultimo
 			player2.setVezDeJogar(true);
 			player1.setVezDeJogar(false);
-		}else if(player2.getVezDeJogar() == true){//se for o player2 que fez o quadrado
+			if(player2.verificaSeEhBot() == true){
+				fazAjogadaDeBot();
+			}
+		}else if(player2.getVezDeJogar() == true){//se for o player2 que jogou por ultimo
 			player1.setVezDeJogar(true);
 			player2.setVezDeJogar(false);
+		}
+	}
+
+	private void fazAjogadaDeBot(){ //DIFICULDADE FACIL PQ VAI COLOCAR UM ALEATORIO
+		int random = (int)(Math.random()*2);
+		int i, j;
+
+		if(random == 0 && qntLinhasAcesas < 30){//vai clicar em uma linha aleatoria
+			for(;;){
+				i = (int)(Math.random() * 5); //valores entre 0 e 4
+				j = (int)(Math.random() * 6); //valores entre 0 e 5
+				if(linhas[i][j].getEstaAcesa() == false){
+					linhas[i][j].acendeLinha();
+					verificaSeDeuQuadrado(i, j, false, true);
+					break;
+				}
+			}
+		}else if(qntColunasAcesas < 30){//vai clicar em uma coluna aleatoria
+			for(;;){
+				i = (int)(Math.random() * 6); //valores entre 0 e 4
+				j = (int)(Math.random() * 5); //valores entre 0 e 5
+				if(colunas[i][j].getEstaAcesa() == false){
+					colunas[i][j].acendeColuna();
+					verificaSeDeuQuadrado(i, j, true, false);
+					break;
+				}
+			}
 		}
 	}
 }

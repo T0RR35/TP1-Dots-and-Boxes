@@ -73,14 +73,18 @@ public class Coluna extends ModelObject {
 		if(jaVerificou == false){
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
 				if (hitbox.contains(mouseX, mouseYreal)) {
-					image = new Texture("colunaAcesa.png");
-					coluna.setRegion(image);
-					estaAcesa = true;
-					temQueVerificarSeDeuQuadrado = true;
-					jaVerificou = true;
+					acendeColuna();
 				}
 			}
 		}
+	}
+
+	public void acendeColuna(){
+		image = new Texture("colunaAcesa.png");
+		coluna.setRegion(image);
+		estaAcesa = true;
+		temQueVerificarSeDeuQuadrado = true;
+		jaVerificou = true;
 	}
 
 	public boolean getEstaAcesa(){
