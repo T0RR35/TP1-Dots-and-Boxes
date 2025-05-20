@@ -33,7 +33,6 @@ public class Linha extends ModelObject {
 
 		this(); // vai pro construtor padrao
 
-		float x, y;
 		x = (l % 5) * 116f + 38;
 
 		if ((l / 5) < 1) { // se l/6 < 1 l esta na primeira linha

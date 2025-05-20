@@ -39,12 +39,14 @@ public class Ponto extends ModelObject {
 		ponto.setPosition(x, y);
 	}
 
+	@Override
 	public void render() {
 		batch.begin();
 		ponto.draw(batch);
 		batch.end();
 	}
 
+	@Override
 	public void dispose() {
 		batch.dispose();
 		image.dispose();

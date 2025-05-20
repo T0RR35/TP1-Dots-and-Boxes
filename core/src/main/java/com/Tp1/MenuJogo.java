@@ -1,7 +1,5 @@
 package com.Tp1;
 
-import java.io.FileNotFoundException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Screen;
@@ -18,19 +16,14 @@ public class MenuJogo implements Screen {
     private Main game;
 
     private SpriteBatch batch;
-    private Sprite background;
     private Sprite playerXplayer;
     private Sprite playerXeasy;
     private Sprite playerXhard;
-    private Texture imageBackground;
     private Texture imagePlayerXplayer;
     private Texture imagePlayerXeasy;
     private Texture imagePlayerXhard;
     public BitmapFont font;
     public FitViewport viewport;
-    public float tempo = 0;
-    public Integer relogio;
-    public float deltaTime = 0;
 
     public MenuJogo(Main game) {
         this.game = game;
@@ -42,8 +35,6 @@ public class MenuJogo implements Screen {
         font = new BitmapFont();
         viewport = new FitViewport(8, 5);
 
-        imageBackground = new Texture("fundoMenuTemporario.jpg");
-        background = new Sprite(imageBackground);
         imagePlayerXplayer = new Texture("playerXplayer.jpg");
         playerXplayer = new Sprite(imagePlayerXplayer);
         playerXplayer.setScale(0.3f, 0.3f);
@@ -54,12 +45,6 @@ public class MenuJogo implements Screen {
         playerXhard = new Sprite(imagePlayerXhard);
         playerXhard.setScale(0.3f, 0.3f);
 
-        // escala baseada no tamanho da tela, entao o fundo sempre cobrira tudo
-        background.setScale(Gdx.graphics.getWidth() / background.getWidth(),
-                Gdx.graphics.getHeight() / background.getHeight());
-        deltaTime = 0;
-        relogio = new Integer(0);
-
         font.setUseIntegerPositions(false);
         // font.getData().setScale();
     }
@@ -68,17 +53,9 @@ public class MenuJogo implements Screen {
     @Override
     public void render(float delta) {
 
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        ScreenUtils.clear(225/255f, 111/255f, 166/255f, 1f); //desenha fundo
 
-        if (tempo < 1f) {
-            deltaTime = Gdx.graphics.getDeltaTime();
-            tempo += deltaTime;
-        } else {
-            tempo = 0;
-            relogio++;
-        }
         batch.begin();
-        batch.draw(background, 0, 0); // desenha fundo
 
         playerXplayer.setPosition(-150, 50);
         playerXhard.setPosition(15, 50);
@@ -87,9 +64,9 @@ public class MenuJogo implements Screen {
         playerXhard.draw(batch);
         playerXeasy.draw(batch);
 
-        font.draw(batch, relogio.toString(), 20, Gdx.graphics.getHeight() - 50);
         font.draw(batch, " Bem-vindo ao Dots and Boxes", 210, 300);
         font.draw(batch, "Clique em qualquer lugar para começar!", 190, 100);
+
         batch.end();
 
         selecionaDificuldade();
@@ -127,9 +104,7 @@ public class MenuJogo implements Screen {
 
     @Override
     public void dispose() {
-
         batch.dispose();
-        imageBackground.dispose();
     }
 
     // implementaçao obrigatoria da class screen

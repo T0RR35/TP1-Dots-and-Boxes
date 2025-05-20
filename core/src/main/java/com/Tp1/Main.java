@@ -1,14 +1,8 @@
 package com.Tp1;
 
-import java.util.Scanner;
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import java.io.*;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all

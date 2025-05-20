@@ -33,7 +33,6 @@ public class Coluna extends ModelObject {
 
 		this(); // vai pro construtor padrao
 
-		float x, y;
 		x = (c % 6) * 116f - 20;
 
 		if ((c / 6) < 1) { // se c/6 < 1 c esta na primeira linha
