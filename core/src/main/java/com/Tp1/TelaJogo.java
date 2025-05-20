@@ -19,7 +19,7 @@ public class TelaJogo implements Screen {
     private SpriteBatch batch;
     private Sprite background;
     private Texture imageBackground;
-	public BitmapFont font;
+    public BitmapFont font;
 
     public float tempo = 0;
     public Integer segundos, minutos;
@@ -52,8 +52,8 @@ public class TelaJogo implements Screen {
         background.setScale(Gdx.graphics.getWidth() / background.getWidth(), Gdx.graphics.getHeight() / background.getHeight());
 
         player1.setVezDeJogar(true);
-		segundos = minutos = new Integer(0);
-		font = new BitmapFont();
+        segundos = minutos = new Integer(0);
+        font = new BitmapFont();
 
         try {
             olhaCoordenadas();
@@ -67,22 +67,24 @@ public class TelaJogo implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
+        boolean passou1segundo = false;
         if (tempo < 1f) {
             deltaTime = Gdx.graphics.getDeltaTime();
             tempo += deltaTime;
         } else {
             tempo = 0;
-			if (segundos % 59 == 0 && segundos > 0) {
-				segundos = 0;
-				minutos++;
-			} else {
-				segundos++;
-			}
+            passou1segundo = true;
+            if (segundos % 59 == 0 && segundos > 0) {
+                segundos = 0;
+                minutos++;
+            } else {
+                segundos++;
+            }
         }
 
         batch.begin();
         batch.draw(background, 0, 0); //desenha fundo
-		font.draw(batch, "Tempo: " + minutos + ":" + segundos.toString(), 20, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 50);
+        font.draw(batch, "Tempo: " + minutos + ":" + segundos.toString(), 20, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 50);
         batch.end();
 
         //renderizando pontos, linhas e colunas
@@ -98,17 +100,19 @@ public class TelaJogo implements Screen {
             }
         }
 
-        //verificando se deu quadrado
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
-                if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
-                    if (colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true) { //pra nao contar quadrado quando clicar em uma coluna/linha que ja esta acesa
-                        verificaSeDeuQuadrado(i, j, true, false);
+        if (passou1segundo) {
+            //verificando se deu quadrado
+            for (int i = 0; i < 6; i++) {
+                for (int j = 0; j < 6; j++) {
+                    if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
+                        if (colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true) { //pra nao contar quadrado quando clicar em uma coluna/linha que ja esta acesa
+                            verificaSeDeuQuadrado(i, j, true, false);
+                        }
                     }
-                }
-                if (i < 5) { //se for == 5 vai acessar memoria que nao existe 
-                    if (linhas[i][j].getTemQueVerificarSeDeuQuadrado() == true) {
-                        verificaSeDeuQuadrado(i, j, false, true);
+                    if (i < 5) { //se for == 5 vai acessar memoria que nao existe 
+                        if (linhas[i][j].getTemQueVerificarSeDeuQuadrado() == true) {
+                            verificaSeDeuQuadrado(i, j, false, true);
+                        }
                     }
                 }
             }
