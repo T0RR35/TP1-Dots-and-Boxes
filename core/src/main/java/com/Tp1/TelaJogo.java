@@ -1,14 +1,12 @@
 package com.Tp1;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.File;
 import java.util.Scanner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -17,27 +15,15 @@ public class TelaJogo implements Screen {
     private Main game;
 
     private SpriteBatch batch;
-    private Sprite background;
-    private Texture imageBackground;
-    public BitmapFont font;
+    private BitmapFont font;
 
-    public float tempo = 0;
-    public Integer segundos, minutos;
-    public float deltaTime = 0;
-
-    Coluna[][] colunas = new Coluna[6][5];
-    Ponto[][] pontos = new Ponto[6][6];
-    Linha[][] linhas = new Linha[5][6];
-    Player player1;
-    Player player2;
-
-    int qntColunasAcesas = 0;
-    int qntLinhasAcesas = 0;
+    private float tempo = 0, deltaTime = 0;
+    private Integer segundos, minutos;
+    private VerificaQuadrado verifica;
 
     public TelaJogo(Main game, String dificuldade) {
         this.game = game;
-        player1 = new Player(dificuldade);
-        player2 = new Player(dificuldade);
+        verifica = new VerificaQuadrado(dificuldade);
         show();
     }
 
@@ -45,27 +31,19 @@ public class TelaJogo implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        imageBackground = new Texture("background.png");
-        background = new Sprite(imageBackground);
-        background.setOriginCenter();
-        //escala baseada no tamanho da tela, entao o fundo sempre cobrira tudo
-        background.setScale(Gdx.graphics.getWidth() / background.getWidth(), Gdx.graphics.getHeight() / background.getHeight());
-
-        player1.setVezDeJogar(true);
+        verifica.getPlayer1().setVezDeJogar(true);
         segundos = minutos = new Integer(0);
         font = new BitmapFont();
-
         try {
-            olhaCoordenadas();
+            verifica.olhaCoordenadas();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
-
     //render recebe delta (fps)
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        ScreenUtils.clear(1f, 186/255f, 206/255f, 1f); //fundo
 
         boolean passou1segundo = false;
         if (tempo < 1f) {
@@ -83,7 +61,6 @@ public class TelaJogo implements Screen {
         }
 
         batch.begin();
-        batch.draw(background, 0, 0); //desenha fundo
         font.draw(batch, "Tempo: " + minutos + ":" + segundos.toString(), 20, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 50);
         batch.end();
 
@@ -91,53 +68,41 @@ public class TelaJogo implements Screen {
         for (int i = 0; i < 6; i++) { //colunas
             for (int j = 0; j < 6; j++) { //linhas
                 if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
-                    colunas[i][j].render();
+                    verifica.getColunas()[i][j].render();
                 }
                 if (i < 5) { //se for == 5 vai acessar memoria que nao existe 
-                    linhas[i][j].render();
+                    verifica.getLinhas()[i][j].render();
                 }
-                pontos[i][j].render();
+                verifica.getPontos()[i][j].render();
             }
         }
 
         if (passou1segundo) {
-            //verificando se deu quadrado
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 6; j++) {
-                    if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
-                        if (colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true) { //pra nao contar quadrado quando clicar em uma coluna/linha que ja esta acesa
-                            verificaSeDeuQuadrado(i, j, true, false);
-                        }
-                    }
-                    if (i < 5) { //se for == 5 vai acessar memoria que nao existe 
-                        if (linhas[i][j].getTemQueVerificarSeDeuQuadrado() == true) {
-                            verificaSeDeuQuadrado(i, j, false, true);
-                        }
-                    }
-                }
-            }
+            verifica.setBotJogou(true);
+            verifica.verificaTudo();
+        } else {
+            verifica.setBotJogou(false);
         }
     }
 
     @Override
     public void dispose() {
-        for (Ponto[] ponto2 : pontos) {
+        for (Ponto[] ponto2 : verifica.getPontos()) {
             for (Ponto ponto : ponto2) {
                 ponto.dispose();
             }
         }
-        for (Linha[] linhas2 : linhas) {
+        for (Linha[] linhas2 : verifica.getLinhas()) {
             for (Linha linha : linhas2) {
                 linha.dispose();
             }
         }
-        for (Coluna[] colunas2 : colunas) {
+        for (Coluna[] colunas2 : verifica.getColunas()) {
             for (Coluna coluna : colunas2) {
                 coluna.dispose();
             }
         }
         batch.dispose();
-        imageBackground.dispose();
     }
 
     //implementaçao obrigatoria da class screen
@@ -156,52 +121,44 @@ public class TelaJogo implements Screen {
     @Override
     public void resume() {
     }
+}
 
-    //logica jogo
-    public void olhaCoordenadas() throws FileNotFoundException {
+class VerificaQuadrado {
 
-        File getCSVFiles = new File("./assets/coordenadas.csv");
-        Scanner sc = new Scanner(getCSVFiles);
-        sc.useDelimiter(";|\\n");
-        int p = 0, c = 0, l = 0;
-        int ll = 0, cl = 0; // linhas e colunas da matriz LINHA[][]
-        int lc = 0, cc = 0; // linhas e colunas da matriz COLUNA[][]
-        int lp = 0, cp = 0;// linhas e colunas da matriz PONTO[][]
-        String token = "";
+    private Coluna[][] colunas = new Coluna[6][5];
+    private Ponto[][] pontos = new Ponto[6][6];
+    private Linha[][] linhas = new Linha[5][6];
+    private Player player1;
+    private Player player2;
+    int qntColunasAcesas = 0, qntLinhasAcesas = 0;
+    boolean botJogou;
 
-        while (sc.hasNext()) {
-            token = sc.next();
+    public VerificaQuadrado(String dificuldade) {
+        player1 = new Player(dificuldade);
+        player2 = new Player(dificuldade);
+        if (dificuldade.equals("easy") || dificuldade.equals("hard")) {
+            botJogou = false;
+        } else {
+            botJogou = true;
+        }
+    }
 
-            if ("Ponto".equals(token)) {
-                pontos[lp][cp] = new Ponto(p);
-                p++;
-                if (lp == 5) {
-                    lp = 0;
-                    cp++;
-                } else {
-                    lp++;
+    public void verificaTudo() {
+        //verificando se deu quadrado
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (j < 5) { //se for == 5 vai acessar memoria que nao existe 
+                    if (colunas[i][j].getTemQueVerificarSeDeuQuadrado() == true) { //pra nao contar quadrado quando clicar em uma coluna/linha que ja esta acesa
+                        verificaSeDeuQuadrado(i, j, true, false);
+                    }
                 }
-            } else if ("Linha".equals(token)) {
-                linhas[ll][cl] = new Linha(l);
-                l++;
-                if (ll == 4) {
-                    ll = 0;
-                    cl++;
-                } else {
-                    ll++;
-                }
-            } else if ("Coluna".equals(token)) {
-                colunas[lc][cc] = new Coluna(c);
-                c++;
-                if (lc == 5) {
-                    lc = 0;
-                    cc++;
-                } else {
-                    lc++;
+                if (i < 5) { //se for == 5 vai acessar memoria que nao existe 
+                    if (linhas[i][j].getTemQueVerificarSeDeuQuadrado() == true) {
+                        verificaSeDeuQuadrado(i, j, false, true);
+                    }
                 }
             }
         }
-        sc.close();
     }
 
     private void verificaSeDeuQuadrado(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha) {
@@ -320,27 +277,101 @@ public class TelaJogo implements Screen {
     private void fazAjogadaDeBot() { //DIFICULDADE FACIL PQ VAI COLOCAR UM ALEATORIO
         int random = (int) (Math.random() * 2);
         int i, j;
-
-        if (random == 0 && qntLinhasAcesas < 30) {//vai clicar em uma linha aleatoria
-            for (;;) {
-                i = (int) (Math.random() * 5); //valores entre 0 e 4
-                j = (int) (Math.random() * 6); //valores entre 0 e 5
-                if (linhas[i][j].getEstaAcesa() == false) {
-                    linhas[i][j].acendeLinha();
-                    verificaSeDeuQuadrado(i, j, false, true);
-                    break;
+        if (botJogou == true){ 
+            if (random == 0 && qntLinhasAcesas < 30) {//vai clicar em uma linha aleatoria
+                for (;;) {
+                    i = (int) (Math.random() * 5); //valores entre 0 e 4
+                    j = (int) (Math.random() * 6); //valores entre 0 e 5
+                    if (linhas[i][j].getEstaAcesa() == false) {
+                        linhas[i][j].acendeLinha();
+                        verificaSeDeuQuadrado(i, j, false, true);
+                        break;
+                    }
+                }
+            } else if (qntColunasAcesas < 30) {//vai clicar em uma coluna aleatoria
+                for (;;) {
+                    i = (int) (Math.random() * 6); //valores entre 0 e 4
+                    j = (int) (Math.random() * 5); //valores entre 0 e 5
+                    if (colunas[i][j].getEstaAcesa() == false) {
+                        colunas[i][j].acendeColuna();
+                        verificaSeDeuQuadrado(i, j, true, false);
+                        break;
+                    }
                 }
             }
-        } else if (qntColunasAcesas < 30) {//vai clicar em uma coluna aleatoria
-            for (;;) {
-                i = (int) (Math.random() * 6); //valores entre 0 e 4
-                j = (int) (Math.random() * 5); //valores entre 0 e 5
-                if (colunas[i][j].getEstaAcesa() == false) {
-                    colunas[i][j].acendeColuna();
-                    verificaSeDeuQuadrado(i, j, true, false);
-                    break;
+        } else {
+        }
+
+    }
+    //logica jogo
+    public void olhaCoordenadas() throws FileNotFoundException {
+
+        File getCSVFiles = new File("./assets/coordenadas.csv");
+        Scanner sc = new Scanner(getCSVFiles);
+        sc.useDelimiter(";|\\n");
+        int p = 0, c = 0, l = 0;
+        int ll = 0, cl = 0; // linhas e colunas da matriz LINHA[][]
+        int lc = 0, cc = 0; // linhas e colunas da matriz COLUNA[][]
+        int lp = 0, cp = 0;// linhas e colunas da matriz PONTO[][]
+        String token = "";
+
+        while (sc.hasNext()) {
+            token = sc.next();
+
+            if ("Ponto".equals(token)) {
+                pontos[lp][cp] = new Ponto(p);
+                p++;
+                if (lp == 5) {
+                    lp = 0;
+                    cp++;
+                } else {
+                    lp++;
+                }
+            } else if ("Linha".equals(token)) {
+                linhas[ll][cl] = new Linha(l);
+                l++;
+                if (ll == 4) {
+                    ll = 0;
+                    cl++;
+                } else {
+                    ll++;
+                }
+            } else if ("Coluna".equals(token)) {
+                colunas[lc][cc] = new Coluna(c);
+                c++;
+                if (lc == 5) {
+                    lc = 0;
+                    cc++;
+                } else {
+                    lc++;
                 }
             }
         }
+        sc.close();
     }
+
+    public Coluna[][] getColunas() {
+        return colunas;
+    }
+
+    public Ponto[][] getPontos() {
+        return pontos;
+    }
+
+    public Linha[][] getLinhas() {
+        return linhas;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public void setBotJogou(boolean botJogou) {
+        this.botJogou = botJogou;
+    }
+
 }

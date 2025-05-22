@@ -29,7 +29,7 @@ public class Player {
     }
 
     public boolean verificaSeEhBot(){
-        if(dificuldade == "easy" || dificuldade == "hard"){
+        if(dificuldade.equals("easy") || dificuldade.equals("hard")){
             return true;
         }else{
             return false;

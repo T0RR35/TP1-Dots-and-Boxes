@@ -53,7 +53,7 @@ public class MenuJogo implements Screen {
     @Override
     public void render(float delta) {
 
-        ScreenUtils.clear(225/255f, 111/255f, 166/255f, 1f); //desenha fundo
+        ScreenUtils.clear(1f, 186/255f, 206/255f, 1f); //desenha fundo
 
         batch.begin();
 
