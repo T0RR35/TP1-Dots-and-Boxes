@@ -32,7 +32,7 @@ public class Main extends Game {
 
 	@Override
 	public void render() {
-    super.render(); //n sei pq mas só funciona c/ esse super render
+    super.render(); 
 	}
 
 }

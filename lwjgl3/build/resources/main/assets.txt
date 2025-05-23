@@ -1,4 +1,3 @@
-background.png
 botaoApagado.png
 colunaAcesa.png
 colunaApagada.png
