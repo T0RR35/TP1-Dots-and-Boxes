@@ -1,6 +1,7 @@
 package com.Tp1;
 
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -71,6 +72,13 @@ public class TelaJogo implements Screen {
             } else {
                 segundos++;
             }
+        }
+
+        //renderizando os quadrados
+        Iterator<Quadrado> iter = verifica.getQuadrados().iterator();
+        for(Quadrado quadrado1 : verifica.getQuadrados()){
+            Quadrado quadrado = iter.next();
+            quadrado.render();
         }
 
         // renderizando pontos, linhas e colunas

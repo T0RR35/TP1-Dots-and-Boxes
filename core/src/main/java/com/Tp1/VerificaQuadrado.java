@@ -2,6 +2,7 @@ package com.Tp1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class VerificaQuadrado {
@@ -9,6 +10,7 @@ public class VerificaQuadrado {
     private Coluna[][] colunas = new Coluna[6][5];
     private Ponto[][] pontos = new Ponto[6][6];
     private Linha[][] linhas = new Linha[5][6];
+    private ArrayList<Quadrado> quadrados = new ArrayList<>();
     private Player player1;
     private Player player2;
     int qntColunasAcesas = 0, qntLinhasAcesas = 0;
@@ -44,12 +46,8 @@ public class VerificaQuadrado {
 
     private void verificaSeDeuQuadrado(int i, int j, boolean quemChamouFoiUmaColuna, boolean quemChamouFoiUmaLinha) {
 
-        if (quemChamouFoiUmaColuna) {
-            qntColunasAcesas++;
-        }
-        if (quemChamouFoiUmaLinha) {
-            qntLinhasAcesas++;
-        }
+        if (quemChamouFoiUmaColuna)qntColunasAcesas++;
+        if (quemChamouFoiUmaLinha)qntLinhasAcesas++;
 
         boolean deuQuadradoEmCima = false, deuQuadradoEmbaixo = false, deuQuadradoNaDireita = false, deuQuadradoNaEsquerda = false;
         //se i == 5 so pode ter sido uma coluna que chamou a funcao
@@ -92,6 +90,11 @@ public class VerificaQuadrado {
         if (colunas[i - 1][j].getEstaAcesa() == true) { //se a coluna do lado esquerdo estiver acesa
             if ((linhas[i - 1][j].getEstaAcesa() == true) && (linhas[i - 1][j + 1].getEstaAcesa() == true)) {//se a linha da esquerda cima e esquerda baixo estiver acesas
                 System.out.println("Deu quadrado!");
+                if(player1.getVezDeJogar()){
+                    quadrados.add(new Quadrado("Esquerda", i, j, "player1"));
+                }else{
+                    quadrados.add(new Quadrado("Esquerda", i, j, "player2"));
+                }
                 return true;
             }
         }
@@ -103,6 +106,11 @@ public class VerificaQuadrado {
         if (linhas[i][j - 1].getEstaAcesa() == true) { //se a linha de cima estiver acesa
             if ((colunas[i][j - 1].getEstaAcesa() == true) && (colunas[i + 1][j - 1].getEstaAcesa() == true)) {//se as colunas de cima estao acesas
                 System.out.println("Deu quadrado!");
+                if(player1.getVezDeJogar()){
+                    quadrados.add(new Quadrado("EmCima", i, j, "player1"));
+                }else{
+                    quadrados.add(new Quadrado("EmCima", i, j, "player2"));
+                }
                 return true;
             }
         }
@@ -114,6 +122,11 @@ public class VerificaQuadrado {
         if (colunas[i + 1][j].getEstaAcesa() == true) { //se a coluna do lado direito estiver acesa
             if ((linhas[i][j].getEstaAcesa() == true) && (linhas[i][j + 1].getEstaAcesa() == true)) {//se a linha da direita cima e direita baixo estiverem acesas
                 System.out.println("Deu quadrado!");
+                if(player1.getVezDeJogar()){
+                    quadrados.add(new Quadrado("Direita", i, j, "player1"));
+                }else{
+                    quadrados.add(new Quadrado("Direita", i, j, "player2"));
+                }
                 return true;
             }
         }
@@ -125,6 +138,11 @@ public class VerificaQuadrado {
         if (linhas[i][j + 1].getEstaAcesa() == true) { //se a linha de baixo estiver acesa
             if ((colunas[i][j].getEstaAcesa() == true) && (colunas[i + 1][j].getEstaAcesa() == true)) {//se as colunas de baixo estao acesas
                 System.out.println("Deu quadrado!");
+                if(player1.getVezDeJogar()){
+                    quadrados.add(new Quadrado("Embaixo", i, j, "player1"));
+                }else{
+                    quadrados.add(new Quadrado("Embaixo", i, j, "player2"));
+                }
                 return true;
             }
         }
@@ -268,6 +286,10 @@ public class VerificaQuadrado {
 
     public Player getPlayer2() {
         return player2;
+    }
+
+    public ArrayList<Quadrado> getQuadrados(){
+        return quadrados;
     }
 
     public void setBotJogou(boolean botJogou) {
