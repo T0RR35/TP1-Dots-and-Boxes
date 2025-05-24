@@ -27,7 +27,6 @@ public class MenuJogo implements Screen {
 
     public MenuJogo(Main game) {
         this.game = game;
-        show();
     }
 
     @Override

@@ -28,6 +28,10 @@ public class Player {
         return vezDeJogar;
     }
 
+    public String getDificuldade(){
+        return dificuldade;
+    }
+
     public boolean verificaSeEhBot(){
         if(dificuldade.equals("easy") || dificuldade.equals("hard")){
             return true;

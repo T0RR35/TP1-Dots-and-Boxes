@@ -131,10 +131,8 @@ public class VerificaQuadrado {
         return false;
     }
 
-    public boolean verificaSeOJogoAcabou(int [] pontuacaoDosPlayers){
+    public boolean verificaSeOJogoAcabou(){
         if(qntColunasAcesas == 30 && qntLinhasAcesas == 30){
-            pontuacaoDosPlayers[0] = player1.getScore();
-            pontuacaoDosPlayers[1] = player2.getScore();
             return true;
         }else{return false;}
     }
@@ -146,8 +144,12 @@ public class VerificaQuadrado {
         } else if (player2.getVezDeJogar() == true) {//se for o player2 que fez o quadrado
             player2.aumentaScore();
             System.out.println("player 2: " + player2.getScore() + " pontos");
-            if (player2.verificaSeEhBot() == true) {
-                fazAjogadaDeBot();
+            if (player2.verificaSeEhBot() == true) { //se o player 2 for um bot
+                if(player2.getDificuldade().equals("easy")){
+                    fazAjogadaDeBotEasy();
+                }else{
+                    fazAjogadaDeBotHard();
+                }
             }
         }
     }
@@ -157,7 +159,11 @@ public class VerificaQuadrado {
             player2.setVezDeJogar(true);
             player1.setVezDeJogar(false);
             if (player2.verificaSeEhBot() == true) { //se o player 2 for um bot
-                fazAjogadaDeBot();
+                if(player2.getDificuldade().equals("easy")){
+                    fazAjogadaDeBotEasy();
+                }else{
+                    fazAjogadaDeBotHard();
+                }
             }
         } else if (player2.getVezDeJogar() == true) {//se for o player2 que jogou por ultimo
             player1.setVezDeJogar(true);
@@ -165,7 +171,7 @@ public class VerificaQuadrado {
         }
     }
 
-    private void fazAjogadaDeBot() { //DIFICULDADE FACIL PQ VAI COLOCAR UM ALEATORIO
+    private void fazAjogadaDeBotEasy() { //DIFICULDADE FACIL PQ VAI COLOCAR UM ALEATORIO
         int random = (int) (Math.random() * 2);
         int i, j;
         if (botJogou == true){ 
@@ -192,6 +198,9 @@ public class VerificaQuadrado {
             }
         } else {
         }
+    }
+
+    public void fazAjogadaDeBotHard(){
 
     }
     //logica jogo

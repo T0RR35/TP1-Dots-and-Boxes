@@ -24,7 +24,6 @@ public class TelaJogo implements Screen {
     private BitmapFont font;
     private SpriteBatch batchGameOver;
     private BitmapFont fontGameOver;
-    private FitViewport viewport;
     private Sprite menuGameOver;
     private Texture imageGameOver;
     private FreeTypeFontParameter parameter;
@@ -88,11 +87,13 @@ public class TelaJogo implements Screen {
         }
 
         batch.begin();
-        int[] pontuacaoDosPlayers = new int[2];
-        if (verifica.verificaSeOJogoAcabou(pontuacaoDosPlayers)) {
-            desenhaGameOver(pontuacaoDosPlayers);
+        if (verifica.verificaSeOJogoAcabou()) {
+            desenhaGameOver();
+        }else{
+            mostraPontuacaoNaTela();
         }
-        font.draw(batch, "Tempo: " + minutos + ":" + segundos.toString(), 20,
+
+        font.draw(batch, "Tempo: " + minutos + ":" + segundos.toString(), (Gdx.graphics.getWidth() / 2) - 40,
                 Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 50);
         batch.end();
 
@@ -104,23 +105,41 @@ public class TelaJogo implements Screen {
         }
     }
 
-    public void desenhaGameOver(int[] pontuacaoDosPlayers) {
+    public void mostraPontuacaoNaTela(){
+        BitmapFont fontPontuacao = new BitmapFont();
+
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/MinhaFonte.ttf"));
+        parameter = new FreeTypeFontParameter();
+        parameter.size = 20;
+        fontPontuacao = generator.generateFont(parameter);
+        fontPontuacao.setUseIntegerPositions(false);
+        fontPontuacao.setColor(Color.BLACK);
+
+        fontPontuacao.draw(batch,
+                "Player 1: " + verifica.getPlayer1().getScore(),
+                15, (Gdx.graphics.getHeight()) - 10);
+        fontPontuacao.draw(batch,
+                "Player 2: " + verifica.getPlayer2().getScore(),
+                Gdx.graphics.getWidth()  - 150, (Gdx.graphics.getHeight()) - 10);
+    }
+
+    public void desenhaGameOver() {
         iniciaAsVariaveisGameOver();
         batchGameOver.begin();
 
         menuGameOver.draw(batchGameOver);
         fontGameOver.draw(batchGameOver,
-                "GAME OVER!\nPlayer 1: " + pontuacaoDosPlayers[0] + "\nPlayer 2: " + pontuacaoDosPlayers[1],
+                "GAME OVER!\nPlayer 1: " + verifica.getPlayer1().getScore() + "\nPlayer 2: " + verifica.getPlayer2().getScore(),
                 (Gdx.graphics.getWidth() / 2f) - 100, ((Gdx.graphics.getHeight()) / 2f) + 100);
 
-        if (pontuacaoDosPlayers[0] > pontuacaoDosPlayers[1]) {
+        if (verifica.getPlayer1().getScore() > verifica.getPlayer2().getScore()) {
             fontGameOver.draw(batchGameOver, "PLAYER 1 WINS", (Gdx.graphics.getWidth() / 2f) - 100,
                     ((Gdx.graphics.getHeight()) / 2f) - 40);
-        } else if (pontuacaoDosPlayers[0] < pontuacaoDosPlayers[1]) {
+        } else if (verifica.getPlayer1().getScore() < verifica.getPlayer2().getScore()) {
             fontGameOver.draw(batchGameOver, "PLAYER 2 WINS", (Gdx.graphics.getWidth() / 2f) - 100,
                     ((Gdx.graphics.getHeight()) / 2f) - 40);
         }
-        if (pontuacaoDosPlayers[0] == pontuacaoDosPlayers[1]) {
+        if (verifica.getPlayer1().getScore() == verifica.getPlayer2().getScore()) {
             fontGameOver.draw(batchGameOver, "EMPATE", (Gdx.graphics.getWidth() / 2f) - 100,
                     ((Gdx.graphics.getHeight()) / 2f) - 40);
         }
@@ -153,7 +172,6 @@ public class TelaJogo implements Screen {
         fontGameOver = generator.generateFont(parameter);
         fontGameOver.setUseIntegerPositions(false);
         fontGameOver.setColor(Color.BLACK);
-        viewport = new FitViewport(8, 5);
 
         imageGameOver = new Texture("GameOver.png");
         menuGameOver = new Sprite(imageGameOver);
