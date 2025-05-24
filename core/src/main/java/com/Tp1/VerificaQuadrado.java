@@ -75,9 +75,11 @@ public class VerificaQuadrado {
         }
 
         //se fez quadrado aumenta ponto e repete a jogada
-        if (deuQuadradoEmCima || deuQuadradoEmbaixo || deuQuadradoNaDireita || deuQuadradoNaEsquerda) {
-            repeteAjogadaEaumentaPonto();
-        }
+        if (deuQuadradoEmCima)repeteAjogadaEaumentaPonto();
+        if (deuQuadradoEmbaixo)repeteAjogadaEaumentaPonto();
+        if (deuQuadradoNaDireita)repeteAjogadaEaumentaPonto();
+        if (deuQuadradoNaEsquerda)repeteAjogadaEaumentaPonto();
+        //nao tem como fazer apenas um if com || ja que se vc fizer 2 quadrados de uma vez contaria apenas um ponto
 
         //se nao fez quadrado
         if (!deuQuadradoEmCima && !deuQuadradoEmbaixo && !deuQuadradoNaDireita && !deuQuadradoNaEsquerda) {
@@ -129,6 +131,14 @@ public class VerificaQuadrado {
         return false;
     }
 
+    public boolean verificaSeOJogoAcabou(int [] pontuacaoDosPlayers){
+        if(qntColunasAcesas == 30 && qntLinhasAcesas == 30){
+            pontuacaoDosPlayers[0] = player1.getScore();
+            pontuacaoDosPlayers[1] = player2.getScore();
+            return true;
+        }else{return false;}
+    }
+
     private void repeteAjogadaEaumentaPonto() {
         if (player1.getVezDeJogar() == true) {//se for o player1 que fez o quadrado
             player1.aumentaScore();
@@ -146,7 +156,7 @@ public class VerificaQuadrado {
         if (player1.getVezDeJogar() == true) {//se for o player1 que jogou por ultimo
             player2.setVezDeJogar(true);
             player1.setVezDeJogar(false);
-            if (player2.verificaSeEhBot() == true) {
+            if (player2.verificaSeEhBot() == true) { //se o player 2 for um bot
                 fazAjogadaDeBot();
             }
         } else if (player2.getVezDeJogar() == true) {//se for o player2 que jogou por ultimo
@@ -254,5 +264,4 @@ public class VerificaQuadrado {
     public void setBotJogou(boolean botJogou) {
         this.botJogou = botJogou;
     }
-
 }
