@@ -16,6 +16,8 @@ public class MenuJogo implements Screen {
     private Main game;
 
     private SpriteBatch batch;
+    private Sprite fundoMenu;
+    private Texture imagefundoMenu;
     private Sprite playerXplayer;
     private Sprite playerXeasy;
     private Sprite playerXhard;
@@ -36,15 +38,20 @@ public class MenuJogo implements Screen {
         font = new BitmapFont();
         viewport = new FitViewport(8, 5);
 
+        imagefundoMenu = new Texture("Menu.jpg");
+        fundoMenu = new Sprite(imagefundoMenu);
+
         imagePlayerXplayer = new Texture("playerXplayer.jpg");
         playerXplayer = new Sprite(imagePlayerXplayer);
-        playerXplayer.setScale(0.3f, 0.3f);
+        playerXplayer.setScale(1f, 1f);
+
         imagePlayerXeasy = new Texture("playerXeasy.jpg");
         playerXeasy = new Sprite(imagePlayerXeasy);
-        playerXeasy.setScale(0.3f, 0.3f);
+        playerXeasy.setScale(1f, 1f);
+
         imagePlayerXhard = new Texture("playerXhard.jpg");
         playerXhard = new Sprite(imagePlayerXhard);
-        playerXhard.setScale(0.3f, 0.3f);
+        playerXhard.setScale(1f, 1f);
 
         font.setUseIntegerPositions(false);
 
@@ -61,16 +68,16 @@ public class MenuJogo implements Screen {
         ScreenUtils.clear(1f, 186/255f, 206/255f, 1f); //desenha fundo
 
         batch.begin();
-
-        playerXplayer.setPosition(-150, 50);
-        playerXhard.setPosition(15, 50);
-        playerXeasy.setPosition(250, 50);
+        playerXplayer.setPosition(139, 270);
+        playerXhard.setPosition(139, 150);
+        playerXeasy.setPosition(139, 30);
+        fundoMenu.draw(batch);
         playerXplayer.draw(batch);
         playerXhard.draw(batch);
         playerXeasy.draw(batch);
 
-        font.draw(batch, " Bem-vindo ao Dots and Boxes", 210, 300);
-        font.draw(batch, "Clique em qualquer lugar para começar!", 190, 100);
+        //font.draw(batch, " Bem-vindo ao Dots and Boxes", 210, 300);
+        //font.draw(batch, "Clique em qualquer lugar para começar!", 190, 100);
 
         batch.end();
 
@@ -78,12 +85,12 @@ public class MenuJogo implements Screen {
     }
 
     public void selecionaDificuldade() {
-        Rectangle hitboxPlayerXplayer = new Rectangle(30, 145, playerXplayer.getWidth() * 0.3f,
-                playerXplayer.getHeight() * 0.3f);// (x, y, width, height)
-        Rectangle hitboxPlayerXhard = new Rectangle(230, 145, playerXhard.getWidth() * 0.3f,
-                playerXhard.getHeight() * 0.3f);// (x, y, width, height)
-        Rectangle hitboxPlayerXeasy = new Rectangle(445, 145, playerXeasy.getWidth() * 0.3f,
-                playerXeasy.getHeight() * 0.3f);// (x, y, width, height)
+        Rectangle hitboxPlayerXplayer = new Rectangle(139, 270, playerXplayer.getWidth() * 1f,
+                playerXplayer.getHeight() * 1f);// (x, y, width, height)
+        Rectangle hitboxPlayerXhard = new Rectangle(139, 150, playerXhard.getWidth() * 1f,
+                playerXhard.getHeight() * 1f);// (x, y, width, height)
+        Rectangle hitboxPlayerXeasy = new Rectangle(139, 30, playerXeasy.getWidth() * 1f,
+                playerXeasy.getHeight() * 1f);// (x, y, width, height)
 
         int mouseX = Gdx.input.getX();
         int mouseY = Gdx.input.getY();
