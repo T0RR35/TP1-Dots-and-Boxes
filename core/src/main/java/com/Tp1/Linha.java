@@ -73,6 +73,11 @@ public class Linha extends ModelObject {
 		int mouseYreal = Gdx.graphics.getHeight() - mouseY;
 
 		if(jaVerificou == false){
+			if (hitbox.contains(mouseX, mouseYreal)) {
+                linha.setAlpha(1);
+            } else {
+				linha.setAlpha(0.7f);
+			}
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
 				if (hitbox.contains(mouseX, mouseYreal)) {
 					controleSons.playClickSound();
