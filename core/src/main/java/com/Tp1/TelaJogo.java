@@ -202,7 +202,21 @@ public class TelaJogo implements Screen {
 
         if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
             if (hitbox.contains(mouseX, mouseYreal)) {
-                //new MenuJogo(game);
+                limpaJogo();
+                game.setScreen(new MenuJogo(game));
+            }
+        }
+    }
+
+    public void limpaJogo() {
+        for (Linha[] linhas2 : verifica.getLinhas()) {
+            for (Linha linha : linhas2) {
+                linha.reseta();
+            }
+        }
+        for (Coluna[] colunas2 : verifica.getColunas()) {
+            for (Coluna coluna : colunas2) {
+                coluna.reseta();
             }
         }
     }

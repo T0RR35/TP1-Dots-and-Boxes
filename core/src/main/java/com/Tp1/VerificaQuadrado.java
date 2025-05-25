@@ -223,45 +223,42 @@ public class VerificaQuadrado {
     }
     //logica jogo
     public void olhaCoordenadas() throws FileNotFoundException {
-
         File getCSVFiles = new File("./assets/coordenadas.csv");
         Scanner sc = new Scanner(getCSVFiles);
         sc.useDelimiter(";|\\n");
-        int p = 0, c = 0, l = 0;
-        int ll = 0, cl = 0; // linhas e colunas da matriz LINHA[][]
-        int lc = 0, cc = 0; // linhas e colunas da matriz COLUNA[][]
-        int lp = 0, cp = 0;// linhas e colunas da matriz PONTO[][]
+        int ponto = 0, coluna = 0, linha = 0;
+        int linhaLinha = 0, colunaLinha = 0; // linhas e colunas da matriz LINHA[][]
+        int linhaColuna = 0, colunaColuna = 0; // linhas e colunas da matriz COLUNA[][]
+        int linhaPonto = 0, colunaPonto = 0;// linhas e colunas da matriz PONTO[][]
         String token = "";
-
         while (sc.hasNext()) {
             token = sc.next();
-
             if ("Ponto".equals(token)) {
-                pontos[lp][cp] = new Ponto(p);
-                p++;
-                if (lp == 5) {
-                    lp = 0;
-                    cp++;
+                pontos[linhaPonto][colunaPonto] = new Ponto(ponto);
+                ponto++;
+                if (linhaPonto == 5) {
+                    linhaPonto = 0;
+                    colunaPonto++;
                 } else {
-                    lp++;
+                    linhaPonto++;
                 }
             } else if ("Linha".equals(token)) {
-                linhas[ll][cl] = new Linha(l);
-                l++;
-                if (ll == 4) {
-                    ll = 0;
-                    cl++;
+                linhas[linhaLinha][colunaLinha] = new Linha(linha);
+                linha++;
+                if (linhaLinha == 4) {
+                    linhaLinha = 0;
+                    colunaLinha++;
                 } else {
-                    ll++;
+                    linhaLinha++;
                 }
             } else if ("Coluna".equals(token)) {
-                colunas[lc][cc] = new Coluna(c);
-                c++;
-                if (lc == 5) {
-                    lc = 0;
-                    cc++;
+                colunas[linhaColuna][colunaColuna] = new Coluna(coluna);
+                coluna++;
+                if (linhaColuna == 5) {
+                    linhaColuna = 0;
+                    colunaColuna++;
                 } else {
-                    lc++;
+                    linhaColuna++;
                 }
             }
         }

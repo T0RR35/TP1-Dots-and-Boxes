@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Disposable;
 public class ControlaSons implements Disposable{
 
     private static ControlaSons instancia; //instancia para gerenciar a classe globalmente
-
     private Music musicaDeFundo;
     private float musicVolume = 0.1f;
 
@@ -23,7 +22,6 @@ public class ControlaSons implements Disposable{
         musicaDeFundo.setLooping(true);
         musicaDeFundo.setVolume(musicVolume); 
 
-        
         clickSound = Gdx.audio.newSound(Gdx.files.internal("clickSound.wav"));
         quadradoSound = Gdx.audio.newSound(Gdx.files.internal("quadradoSound.wav"));
     }
@@ -63,7 +61,7 @@ public class ControlaSons implements Disposable{
             clickSound.dispose();
             clickSound = null; 
         }
-        if ( quadradoSound!= null) {
+        if (quadradoSound!= null) {
             quadradoSound.dispose();
             quadradoSound = null; 
         }

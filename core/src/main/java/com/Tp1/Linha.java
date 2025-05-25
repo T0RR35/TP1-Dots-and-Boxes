@@ -95,6 +95,11 @@ public class Linha extends ModelObject {
 		jaVerificou = true;
 	}
 
+	public void reseta() {
+		this.estaAcesa = false;
+		this.jaVerificou = false;
+	}
+
 	public boolean getEstaAcesa(){
 		return estaAcesa;
 	}

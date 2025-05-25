@@ -19,6 +19,7 @@ public class Quadrado {
             controleSons.playQuadradoSound();
             cor = Color.RED;
         }else if(qualPlayerFezOquadrado.equals("player2")){
+            controleSons.playQuadradoSound();
             cor = Color.BLUE;
         }
         
