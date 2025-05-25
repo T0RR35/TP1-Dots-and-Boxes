@@ -35,4 +35,12 @@ public class Main extends Game {
     super.render(); 
 	}
 
+	@Override
+    public void dispose() {
+        super.dispose(); 
+        
+        if (ControlaSons.getInstance() != null) { 
+            ControlaSons.getInstance().dispose();
+        }
+    }
 }

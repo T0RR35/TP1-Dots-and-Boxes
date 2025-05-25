@@ -14,6 +14,7 @@ public class Linha extends ModelObject {
 	private boolean temQueVerificarSeDeuQuadrado;
 	private boolean jaVerificou;
 	private Rectangle hitbox;
+	private ControlaSons controleSons;
 
 	Linha() {
 		image = new Texture("linhaApagada.png");
@@ -56,6 +57,7 @@ public class Linha extends ModelObject {
 		linha.draw(batch);
 		batch.end();
 		testaColisao();
+		controleSons = ControlaSons.getInstance();
 	}
 
 	public void dispose() {
@@ -73,6 +75,7 @@ public class Linha extends ModelObject {
 		if(jaVerificou == false){
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
 				if (hitbox.contains(mouseX, mouseYreal)) {
+					controleSons.playClickSound();
 					acendeLinha();
 				}
 			}

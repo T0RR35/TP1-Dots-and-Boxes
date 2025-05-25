@@ -14,6 +14,7 @@ public class Coluna extends ModelObject {
 	private boolean temQueVerificarSeDeuQuadrado;
 	private boolean jaVerificou;
 	private Rectangle hitbox;
+	private ControlaSons controleSons;
 
 	Coluna() {
 		image = new Texture("colunaApagada.png");
@@ -54,6 +55,7 @@ public class Coluna extends ModelObject {
 		coluna.draw(batch);
 		batch.end();
 		testaColisao();
+		controleSons = ControlaSons.getInstance();
 	}
 
 	public void dispose() {
@@ -72,6 +74,7 @@ public class Coluna extends ModelObject {
 		if(jaVerificou == false){
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
 				if (hitbox.contains(mouseX, mouseYreal)) {
+					controleSons.playClickSound();
 					acendeColuna();
 				}
 			}

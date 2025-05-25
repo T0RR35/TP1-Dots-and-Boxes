@@ -1,6 +1,5 @@
 package com.Tp1;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,11 +9,14 @@ public class Quadrado {
     private ShapeRenderer quadrado = new ShapeRenderer();
     private Rectangle retangulo;
     private Color cor;
+    private ControlaSons controleSons;
 
     Quadrado(String ondeEstaOquadrado, int i, int j, String qualPlayerFezOquadrado){
-
+        
+        controleSons = ControlaSons.getInstance();
         // define a cor de acordo com o player
         if(qualPlayerFezOquadrado.equals("player1")){
+            controleSons.playQuadradoSound();
             cor = Color.RED;
         }else if(qualPlayerFezOquadrado.equals("player2")){
             cor = Color.BLUE;

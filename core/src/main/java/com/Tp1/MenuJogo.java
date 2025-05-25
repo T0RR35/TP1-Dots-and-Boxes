@@ -24,6 +24,7 @@ public class MenuJogo implements Screen {
     private Texture imagePlayerXhard;
     public BitmapFont font;
     public FitViewport viewport;
+    private ControlaSons controleSons;
 
     public MenuJogo(Main game) {
         this.game = game;
@@ -46,6 +47,10 @@ public class MenuJogo implements Screen {
         playerXhard.setScale(0.3f, 0.3f);
 
         font.setUseIntegerPositions(false);
+
+        controleSons = ControlaSons.getInstance(); //inicializando
+        controleSons.playMusic(); //toca msc de fundo
+       
         // font.getData().setScale();
     }
 
@@ -86,15 +91,19 @@ public class MenuJogo implements Screen {
         int mouseYreal = Gdx.graphics.getHeight() - mouseY;
 
         if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
+            
             if (hitboxPlayerXplayer.contains(mouseX, mouseYreal)) {
+                controleSons.playClickSound();
                 game.setScreen(new TelaJogo(game, "player"));
                 System.out.println("Player X player");
                 dispose();
             } else if (hitboxPlayerXhard.contains(mouseX, mouseYreal)) {
+                controleSons.playClickSound();
                 game.setScreen(new TelaJogo(game, "hard"));
                 System.out.println("Player X hard");
                 dispose();
             } else if (hitboxPlayerXeasy.contains(mouseX, mouseYreal)) {
+                controleSons.playClickSound();
                 game.setScreen(new TelaJogo(game, "easy"));
                 System.out.println("Player X easy");
                 dispose();
@@ -105,6 +114,10 @@ public class MenuJogo implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
+        font.dispose(); 
+        imagePlayerXplayer.dispose();
+        imagePlayerXeasy.dispose();
+        imagePlayerXhard.dispose();
     }
 
     // implementaçao obrigatoria da class screen
