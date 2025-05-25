@@ -81,6 +81,7 @@ public class Linha extends ModelObject {
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
 				if (hitbox.contains(mouseX, mouseYreal)) {
 					controleSons.playClickSound();
+					temQueVerificarSeDeuQuadrado = true;
 					acendeLinha();
 				}
 			}
@@ -91,7 +92,6 @@ public class Linha extends ModelObject {
 		image = new Texture("linhaAcesa.png");
 		linha.setRegion(image);
 		estaAcesa = true;
-		temQueVerificarSeDeuQuadrado = true;
 		jaVerificou = true;
 	}
 

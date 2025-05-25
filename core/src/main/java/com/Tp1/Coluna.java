@@ -80,6 +80,7 @@ public class Coluna extends ModelObject {
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
 				if (hitbox.contains(mouseX, mouseYreal)) {
 					controleSons.playClickSound();
+					temQueVerificarSeDeuQuadrado = true;
 					acendeColuna();
 				}
 			}
@@ -90,7 +91,6 @@ public class Coluna extends ModelObject {
 		image = new Texture("colunaAcesa.png");
 		coluna.setRegion(image);
 		estaAcesa = true;
-		temQueVerificarSeDeuQuadrado = true;
 		jaVerificou = true;
 	}
 
