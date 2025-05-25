@@ -1,8 +1,9 @@
 # TP1 - Dots and Boxes
 
 Este trabalho prático consiste em um remake do jogo "Dots and Boxes", desenvolvido em Java 17 com a biblioteca libGDX na versão 1.13.1, para a matéria de LLP2 do curso de informática do CEFET-MG campus Contagem. 
+
 O desenvolvimento foi realizado utilizando o Visual Studio Code (versão 1.100.2) como IDE, e o GitHub foi utilizado para controle de versão e organização do projeto entre os membros da equipe.
-Este projeto foi gerado com um template libGDX, incluindo lançadores de aplicação simples e uma extensão `ApplicationAdapter` que desenha o logo do libGDX.
+
 
 ## Integrantes da equipe
 - [@AninhaCampos](https://github.com/AninhaCampos)
