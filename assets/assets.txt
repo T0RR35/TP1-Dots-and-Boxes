@@ -1,4 +1,5 @@
 GameOver.png
+Menu.jpg
 MinhaFonte.ttf
 background.png
 botaoApagado.png
@@ -14,4 +15,5 @@ musicadefundo.mp3
 playerXeasy.jpg
 playerXhard.jpg
 playerXplayer.jpg
+playerXplayer.png
 quadradoSound.wav

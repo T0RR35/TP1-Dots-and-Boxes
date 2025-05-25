@@ -56,7 +56,7 @@ public class TelaJogo implements Screen {
     // render recebe delta (fps)
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(1f, 186 / 255f, 206 / 255f, 1f); // fundo
+        ScreenUtils.clear(183 / 255f, 223 / 255f, 223 / 255f, 1f); // fundo
 
         boolean passou1segundo = false;
         if (tempo < 1f) {
@@ -98,10 +98,13 @@ public class TelaJogo implements Screen {
             desenhaGameOver();
         }else{
             mostraPontuacaoNaTela();
+            
+            font = generator.generateFont(parameter);
+            font.setColor(Color.BLACK);
+            font.draw(batch, "Tempo: " + minutos + ":" + segundos.toString(), (Gdx.graphics.getWidth() / 2) - 40,
+                Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 50);
         }
 
-        font.draw(batch, "Tempo: " + minutos + ":" + segundos.toString(), (Gdx.graphics.getWidth() / 2) - 40,
-                Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 50);
         batch.end();
 
         if (passou1segundo) {
@@ -136,11 +139,11 @@ public class TelaJogo implements Screen {
 
         menuGameOver.draw(batchGameOver);
         fontGameOver.draw(batchGameOver,
-                "GAME OVER!\nPlayer 1: " + verifica.getPlayer1().getScore() + "\nPlayer 2: " + verifica.getPlayer2().getScore(),
+                "Player 1: " + verifica.getPlayer1().getScore() + "\nPlayer 2: " + verifica.getPlayer2().getScore(),
                 (Gdx.graphics.getWidth() / 2f) - 100, ((Gdx.graphics.getHeight()) / 2f) + 100);
 
         if (verifica.getPlayer1().getScore() > verifica.getPlayer2().getScore()) {
-            fontGameOver.draw(batchGameOver, "PLAYER 1 WINS", (Gdx.graphics.getWidth() / 2f) - 100,
+            fontGameOver.draw(batchGameOver, "PLAYER 1 WINS!", (Gdx.graphics.getWidth() / 2f) - 100,
                     ((Gdx.graphics.getHeight()) / 2f) - 40);
         } else if (verifica.getPlayer1().getScore() < verifica.getPlayer2().getScore()) {
             fontGameOver.draw(batchGameOver, "PLAYER 2 WINS", (Gdx.graphics.getWidth() / 2f) - 100,
@@ -151,18 +154,11 @@ public class TelaJogo implements Screen {
                     ((Gdx.graphics.getHeight()) / 2f) - 40);
         }
 
-        menuGameOver.setScale(0.9f, 0.2f);
-
-        menuGameOver.setPosition(
-                (Gdx.graphics.getWidth() - 512) / 2,
-                ((Gdx.graphics.getHeight() - 512) / 2f) - 170);
-
-        menuGameOver.draw(batchGameOver); // desenha um retangulo quadrado embaixo
         parameter.size = 18;
         fontGameOver = generator.generateFont(parameter);
         fontGameOver.setColor(Color.BLACK);
-        fontGameOver.draw(batchGameOver, "Clique aqui para reiniciar o jogo", (Gdx.graphics.getWidth() / 2f) - 170,
-                ((Gdx.graphics.getHeight()) / 2f) - 155);
+        fontGameOver.draw(batchGameOver, "CLIQUE AQUI PARA REINICIAR", (Gdx.graphics.getWidth() / 2f) - 140,
+                ((Gdx.graphics.getHeight()) / 2f) - 145);
 
         reiniciaJogo();
 
@@ -182,12 +178,7 @@ public class TelaJogo implements Screen {
 
         imageGameOver = new Texture("GameOver.png");
         menuGameOver = new Sprite(imageGameOver);
-        menuGameOver.setScale(0.9f, 0.7f);
         menuGameOver.setOriginCenter();
-
-        menuGameOver.setPosition(
-                (Gdx.graphics.getWidth() - 512) / 2f,
-                (Gdx.graphics.getHeight() - 512) / 2f);
     }
 
     public void reiniciaJogo() {
