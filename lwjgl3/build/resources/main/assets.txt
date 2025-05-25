@@ -1,9 +1,17 @@
+GameOver.png
+MinhaFonte.ttf
+background.png
 botaoApagado.png
+clickSound.wav
 colunaAcesa.png
 colunaApagada.png
 coordenadas.csv
+fundoMenuTemporario.jpg
+libgdx.png
 linhaAcesa.png
 linhaApagada.png
+musicadefundo.mp3
 playerXeasy.jpg
 playerXhard.jpg
 playerXplayer.jpg
+quadradoSound.wav
