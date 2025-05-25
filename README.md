@@ -1,33 +1,92 @@
-# TP1
+# TP1 - Dots and Boxes
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+Este projeto consiste em um remake do jogo "Dots and Boxes", desenvolvido em Java 17 com a biblioteca libGDX na versão 1.13.1. O jogo é uma adaptação digital do popular jogo de tabuleiro, onde os jogadores conectam pontos para formar quadrados.
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+O desenvolvimento foi realizado utilizando o Visual Studio Code (versão 1.100.2) como IDE, e o GitHub foi utilizado para controle de versão e organização do projeto entre os membros da equipe.
 
-## Platforms
+Este projeto foi gerado com um template libGDX, incluindo lançadores de aplicação simples e uma extensão `ApplicationAdapter` que desenha o logo do libGDX.
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+## Plataformas
+
+- `core`: Módulo principal com a lógica da aplicação compartilhada por todas as plataformas.
+- `lwjgl3`: Plataforma desktop primária usando LWJGL3; era chamada de 'desktop' em documentações antigas.
 
 ## Gradle
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+Este projeto utiliza [Gradle](https://gradle.org/) para gerenciar as dependências. O wrapper do Gradle foi incluído, então você pode executar tarefas Gradle usando os comandos `gradlew.bat` (Windows) ou `./gradlew` (Linux/macOS).
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+### Tarefas e Flags Úteis do Gradle
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+- `--continue`: Quando usada, erros não interromperão a execução das tarefas.
+- `--daemon`: Com esta flag, o daemon do Gradle será usado para executar as tarefas escolhidas.
+- `--offline`: Utiliza arquivos de dependências em cache.
+- `--refresh-dependencies`: Força a validação de todas as dependências. Útil para versões snapshot.
+- `build`: Compila os fontes e cria os arquivos de cada projeto.
+- `cleanEclipse`: Remove dados de projeto do Eclipse.
+- `cleanIdea`: Remove dados de projeto do IntelliJ.
+- `clean`: Remove as pastas `build`, que armazenam classes compiladas e arquivos construídos.
+- `eclipse`: Gera dados de projeto do Eclipse.
+- `idea`: Gera dados de projeto do IntelliJ.
+- `lwjgl3:jar`: Constrói o arquivo JAR executável da aplicação, que pode ser encontrado em `lwjgl3/build/libs`.
+- `lwjgl3:run`: Inicia a aplicação.
+- `test`: Executa os testes de unidade (se houver).
+
+A maioria das tarefas que não são específicas de um único projeto podem ser executadas com o prefixo `nome:`, onde `nome` deve ser substituído pelo ID de um projeto específico. Por exemplo, `core:clean` remove a pasta `build` apenas do projeto `core`.
+
+## Como Baixar, Compilar e Rodar o Jogo
+
+### 1. Baixar o Projeto
+
+Para baixar o projeto, você pode clonar o repositório do GitHub utilizando o seguinte comando:
+
+```bash
+git clone <URL_DO_SEU_REPOSITORIO>
+```
+
+Substitua `<URL_DO_SEU_REPOSITORIO>` pela URL real do seu repositório GitHub.
+
+### 2. Abrir o Projeto na IDE
+
+Após baixar o projeto, abra-o na sua IDE de preferência (Visual Studio Code, IntelliJ IDEA ou Eclipse). O Gradle deve ser automaticamente reconhecido e as dependências baixadas.
+
+### 3. Compilar o Projeto
+
+Para compilar o projeto, navegue até a raiz do projeto no terminal e execute o comando Gradle de build:
+
+```bash
+./gradlew build
+```
+ou no Windows:
+```bash
+gradlew.bat build
+```
+
+Este comando irá compilar todos os módulos do projeto e gerar os artefatos necessários.
+
+### 4. Rodar o Jogo
+
+Para rodar o jogo diretamente da IDE ou via linha de comando, utilize a seguinte tarefa Gradle:
+
+```bash
+./gradlew lwjgl3:run
+```
+ou no Windows:
+```bash
+gradlew.bat lwjgl3:run
+```
+
+Este comando iniciará a aplicação desktop do jogo "Dots and Boxes".
+
+### 5. Gerar o JAR Executável
+
+Se você deseja um arquivo JAR executável para distribuir o jogo, use o seguinte comando:
+
+```bash
+./gradlew lwjgl3:jar
+```
+ou no Windows:
+```bash
+gradlew.bat lwjgl3:jar
+```
+
+O arquivo JAR será gerado na pasta `lwjgl3/build/libs`.
